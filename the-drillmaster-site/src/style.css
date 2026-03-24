@@ -300,20 +300,29 @@ a:hover {
 .section--cloak::before {
   content: '';
   position: absolute;
-  top: -80px;
+  top: -120px;
   left: 0;
   right: 0;
-  height: 80px;
+  height: 120px;
   background: #29151b;
-  clip-path: ellipse(55% 100% at 50% 100%);
+  /* Diagonal sweep matching cape: high on right, low on left */
+  clip-path: polygon(
+    0% 100%,
+    100% 100%,
+    100% 0%,
+    80% 15%,
+    60% 40%,
+    40% 65%,
+    20% 82%,
+    0% 90%
+  );
   z-index: 2;
 }
 
 @media (max-width: 1024px) {
   .section--cloak::before {
-    top: -50px;
-    height: 50px;
-    clip-path: ellipse(60% 100% at 50% 100%);
+    top: -80px;
+    height: 80px;
   }
 }
 
@@ -453,6 +462,8 @@ a:hover {
 
 .hero__title-wrap {
   animation: fadeIn 0.8s 0.5s ease-out both;
+  width: 100%;
+  max-width: 420px;
 }
 
 .hero__title {
@@ -1395,7 +1406,7 @@ a:hover {
     min-height: auto;
   }
 
-  .hero__title {
+  .hero__title-wrap {
     max-width: 280px;
   }
 
