@@ -1,3 +1,15 @@
+// --- Nav scroll effect (transparent → solid) ---
+
+const siteNav = document.getElementById('site-nav');
+
+if (siteNav) {
+  const onScroll = () => {
+    siteNav.classList.toggle('is-scrolled', window.scrollY > 60);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
 // --- Mobile nav toggle ---
 
 const navToggle = document.getElementById('nav-toggle');
@@ -8,6 +20,11 @@ if (navToggle && navLinks) {
     const open = navToggle.classList.toggle('is-open');
     navLinks.classList.toggle('is-open');
     navToggle.setAttribute('aria-expanded', open);
+    // Force scrolled look when mobile menu is open (for contrast)
+    if (siteNav) {
+      if (open) siteNav.classList.add('is-scrolled');
+      else if (window.scrollY <= 60) siteNav.classList.remove('is-scrolled');
+    }
   });
 
   // Close menu when a nav link is clicked

@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://www.thedrillmaster.gay/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -27,7 +27,8 @@
   <!-- ═══════════════════════════════════════════════════════ NAV -->
   <nav class="nav" id="site-nav">
     <a href="/" class="nav__logo" aria-label="The Drillmaster — Home">
-      <img src="/brand/title-white.svg" alt="The Drillmaster" height="26" />
+      <img src="/brand/title-black.svg" alt="The Drillmaster" height="26" class="nav__logo-dark" />
+      <img src="/brand/title-white.svg" alt="The Drillmaster" height="26" class="nav__logo-light" />
     </a>
     <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -38,6 +39,7 @@
       <a href="https://www.instagram.com/thedrillmasterplay/" target="_blank" rel="noopener" class="nav__link nav__ig" aria-label="Instagram">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
       </a>
+      <a href="https://www.superfanbase.com/show/info/5c2d22a6-46b7-406c-a496-5bd09af3b8c9/" target="_blank" rel="noopener" class="nav__cta nav__cta--ghost">Support Daddy</a>
       <a href="#tickets" class="nav__cta">Get Tickets</a>
     </div>
   </nav>
@@ -57,8 +59,6 @@
     </div>
 
     <div class="hero__content">
-      <p class="hero__pedigree">From the minds behind <a href="https://luigithemusical.info/" target="_blank" rel="noopener"><em>Luigi the Musical</em></a> and Comedy Central's <a href="https://www.paramountplus.com/shows/badass-bitches-of-history/" target="_blank" rel="noopener"><em>Bad Ass Bitches of History</em></a></p>
-
       <div class="hero__title-wrap">
         <img
           class="hero__title hero__title--dark"
@@ -78,6 +78,8 @@
         />
       </div>
 
+      <p class="hero__pedigree">From the minds behind <a href="https://luigithemusical.info/" target="_blank" rel="noopener"><em>Luigi the Musical</em></a> and Comedy Central's <a href="https://www.paramountplus.com/shows/badass-bitches-of-history/" target="_blank" rel="noopener"><em>Bad Ass Bitches of History</em></a></p>
+
       <p class="hero__tagline">The mostly true story of America's <span class="fabulous">gayest</span> founding daddy.</p>
 
       <p class="hero__credits">
@@ -85,24 +87,15 @@
         Written by <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button> &amp; <button type="button" class="hero__credit-name" data-bio="caleb">Caleb Zeringue</button>
       </p>
 
-      <div class="hero__cta">
+      <div class="hero__actions">
         <a href="#tickets" class="btn btn--coral">Come Get Drilled &rarr;</a>
+        <a href="https://www.superfanbase.com/show/info/5c2d22a6-46b7-406c-a496-5bd09af3b8c9/" target="_blank" rel="noopener" class="btn btn--ghost">Support Daddy</a>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════════════ EVENT BANNER -->
-  <div class="event-banner">
-    <span class="event-banner__item">May 3</span>
-    <span class="event-banner__sep">·</span>
-    <span class="event-banner__item">The Elysian</span>
-    <span class="event-banner__sep">·</span>
-    <span class="event-banner__item">Staged Reading</span>
-    <a href="#tickets" class="event-banner__link">Get Tickets</a>
-  </div>
-
   <!-- ═══════════════════════════════════════════════════════ ABOUT -->
-  <section class="section section--dark" id="about" aria-labelledby="about-heading">
+  <section class="section section--cloak" id="about" aria-labelledby="about-heading">
     <h2 class="section__heading" id="about-heading">The Story</h2>
     <div class="about__inner">
       <div class="about__text">
@@ -110,7 +103,7 @@
         <p>Only one thing could save them: A middle-aged, polyamorous, openly gay Prussian Captain, The Baron Friedrich Von Steuben.</p>
         <p>Just in time for the 250th Anniversary of America comes a new story. Over three long, hard winter months, The Baron drilled the men (and drilled the men) from a rag tag group of scattered militia troops into a coordinated army of disciplined red coat killing machines—a coordinated force capable of standing toe-to-toe with the British, with or without pants. Without this super gay, flamboyant and fabulous immigrant, not only would America's current army not exist today, but America's future may never have existed at all.</p>
       </div>
-      <img class="about__soldier" src="/brand/soldier-saluting-dark.svg" alt="" aria-hidden="true" />
+      <img class="about__soldier" src="/brand/soldier-saluting-light.svg" alt="" aria-hidden="true" />
     </div>
   </section>
 
@@ -118,7 +111,7 @@
   <section class="section section--light" id="tickets" aria-labelledby="tickets-heading">
     <h2 class="section__heading" id="tickets-heading">Get Your Tickets</h2>
     <div class="tickets__deco" aria-hidden="true">
-      <img src="/brand/soldier-cta-light.svg" alt="" width="180" />
+      <img src="/brand/soldier-cta-dark.svg" alt="" width="180" />
     </div>
     <div class="tickets__widget">
       <div id="seated-55fdf2c0" data-artist-id="95413a92-0d4e-4805-b943-d731c97e289c" data-css-version="3"></div>
@@ -155,7 +148,7 @@
 
   <!-- ═══════════════════════════════════════════════════════ NEWSLETTER -->
   <section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">
-    <img class="newsletter__soldier" src="/brand/soldier-stunning-dark.svg" alt="" aria-hidden="true" />
+    <img class="newsletter__soldier" src="/brand/soldier-stunning-light.svg" alt="" aria-hidden="true" />
     <h2 class="newsletter__heading" id="newsletter-heading">Stay Drilled</h2>
     <p class="newsletter__sub">Get notified when you should be so lucky to see Friedrich live.</p>
     <p class="newsletter__notice">We didn't have email addresses back then. But we need them now.</p>
@@ -171,6 +164,15 @@
     <p class="newsletter__social">
       Follow the show on <a href="https://www.instagram.com/thedrillmasterplay/" target="_blank" rel="noopener">Instagram</a>
     </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SUPPORT -->
+  <section class="support" id="support">
+    <div class="support__inner">
+      <h2 class="support__heading">Support Daddy</h2>
+      <p class="support__text">Help bring Friedrich's fabulous story to the stage. Every contribution fuels costumes, rehearsals, and historically inaccurate wigs.</p>
+      <a href="https://www.superfanbase.com/show/info/5c2d22a6-46b7-406c-a496-5bd09af3b8c9/" target="_blank" rel="noopener" class="btn btn--coral">Become a Patron &rarr;</a>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════ INSTAGRAM -->
