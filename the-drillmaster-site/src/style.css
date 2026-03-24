@@ -1274,7 +1274,16 @@ a:hover {
     max-width: 280px;
   }
 
-  /* Keep dark logo on mobile — text sits above Baron, not over him */
+  /* Left-align credits + CTA so they don't cover the Baron on the right */
+  .hero__credits {
+    align-self: flex-start;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .hero__cta {
+    align-self: flex-start;
+  }
 
   .hero__stars { display: none; }
 
