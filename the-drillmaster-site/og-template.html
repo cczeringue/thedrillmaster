@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #6ea69e;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .figure {
+    position: absolute;
+    right: -60px;
+    bottom: -20px;
+    height: 680px;
+    width: auto;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    padding: 52px 60px;
+    max-width: 720px;
+  }
+
+  .pedigree {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #2a151c;
+    opacity: 0.7;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .pedigree em {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  .logo {
+    display: block;
+    width: 480px;
+    height: auto;
+    margin-bottom: 28px;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 28px;
+    font-weight: 500;
+    color: #2a151c;
+    line-height: 1.35;
+    margin-bottom: 24px;
+  }
+
+  .tagline .gayest {
+    color: #e8505a;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .credits {
+    font-family: 'Great Vibes', cursive;
+    font-size: 22px;
+    color: #e8505a;
+    line-height: 1.5;
+  }
+
+  .bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #f37478;
+  }
+</style>
+</head>
+<body>
+  <img class="figure" src="public/brand/cape-large.svg" />
+  <div class="content">
+    <p class="pedigree">From the minds behind <em>Luigi the Musical</em> and Comedy Central's <em>Bad Ass Bitches of History</em></p>
+    <img class="logo" src="public/brand/title-black.svg" alt="The Drillmaster" />
+    <p class="tagline">The mostly true story of America's <span class="gayest">gayest</span> founding daddy.</p>
+    <p class="credits">Conceived by Jenny Zigrino<br/>Written by Jenny Zigrino &amp; Caleb Zeringue</p>
+  </div>
+  <div class="bar"></div>
+</body>
+</html>
