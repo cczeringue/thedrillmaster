@@ -24,6 +24,24 @@
 </head>
 <body>
 
+  <!-- ═══════════════════════════════════════════════════════ NAV -->
+  <nav class="nav" id="site-nav">
+    <a href="/" class="nav__logo" aria-label="The Drillmaster — Home">
+      <img src="/brand/title-white.svg" alt="The Drillmaster" height="26" />
+    </a>
+    <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav__links" id="nav-links">
+      <a href="#about" class="nav__link">About</a>
+      <a href="#team" class="nav__link">Who's Who</a>
+      <a href="https://www.instagram.com/thedrillmasterplay/" target="_blank" rel="noopener" class="nav__link nav__ig" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="#tickets" class="nav__cta">Get Tickets</a>
+    </div>
+  </nav>
+
   <!-- ═══════════════════════════════════════════════════════ HERO -->
   <section class="hero">
     <div class="hero__stars" aria-hidden="true">
@@ -43,11 +61,19 @@
 
       <div class="hero__title-wrap">
         <img
-          class="hero__title"
+          class="hero__title hero__title--dark"
           src="/brand/title-black.svg"
           alt="The Drillmaster"
           width="430"
           height="181"
+          decoding="async"
+        />
+        <img
+          class="hero__title hero__title--light"
+          src="/brand/title-white.svg"
+          alt="The Drillmaster"
+          width="406"
+          height="175"
           decoding="async"
         />
       </div>
@@ -55,8 +81,8 @@
       <p class="hero__tagline">The mostly true story of America's <span class="fabulous">gayest</span> founding daddy.</p>
 
       <p class="hero__credits">
-        Conceived by Jenny Zigrino<br />
-        Written by Jenny Zigrino &amp; Caleb Zeringue
+        Conceived by <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button><br />
+        Written by <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button> &amp; <button type="button" class="hero__credit-name" data-bio="caleb">Caleb Zeringue</button>
       </p>
 
       <div class="hero__cta">
@@ -147,6 +173,19 @@
     </p>
   </section>
 
+  <!-- ═══════════════════════════════════════════════════════ INSTAGRAM -->
+  <section class="section section--dark ig-section" id="instagram" aria-labelledby="ig-heading">
+    <h2 class="section__heading" id="ig-heading">Follow the Journey</h2>
+    <div class="ig-section__embed">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/thedrillmasterplay/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 0 auto; max-width:540px; min-width:326px; padding:0; width:calc(100% - 2px);">
+        <a href="https://www.instagram.com/thedrillmasterplay/" target="_blank" rel="noopener">@thedrillmasterplay on Instagram</a>
+      </blockquote>
+    </div>
+    <p class="ig-section__cta">
+      <a href="https://www.instagram.com/thedrillmasterplay/" target="_blank" rel="noopener" class="btn btn--teal">@thedrillmasterplay</a>
+    </p>
+  </section>
+
   <!-- ═══════════════════════════════════════════════════════ FOOTER -->
   <footer class="site-footer">
     <div class="footer__parade" aria-hidden="true">
@@ -219,6 +258,7 @@
   <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
 
   <script src="https://widget.seated.com/app.js" defer></script>
+  <script async src="https://www.instagram.com/embed.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

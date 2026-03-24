@@ -1,3 +1,25 @@
+// --- Mobile nav toggle ---
+
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', () => {
+    const open = navToggle.classList.toggle('is-open');
+    navLinks.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+
+  // Close menu when a nav link is clicked
+  navLinks.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('is-open');
+      navLinks.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
 // --- Bio modals ---
 
 const bioModal = document.getElementById('bio-modal');
