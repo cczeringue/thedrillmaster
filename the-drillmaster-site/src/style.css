@@ -172,7 +172,7 @@ a:hover {
 }
 
 /* Mobile nav */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .nav__toggle {
     display: flex;
     z-index: 2;
@@ -319,7 +319,7 @@ a:hover {
   z-index: 2;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .section--cloak::before {
     top: -80px;
     height: 80px;
@@ -412,8 +412,8 @@ a:hover {
 
 .hero__figure img {
   display: block;
-  height: 105vh;
-  height: 105dvh;
+  height: 95vh;
+  height: 95dvh;
   width: auto;
   /* no flip needed — SVG naturally faces left (inward) */
   /* push right so cape bleeds past viewport edge */
@@ -1363,7 +1363,7 @@ a:hover {
    RESPONSIVE — MOBILE
    ============================================================ */
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   /* Mobile: poster layout — content stacked above, Baron as a full-width
      dramatic illustration below. Cape sweeps across the bottom and
      bleeds into the dark section beneath. */
@@ -1421,6 +1421,7 @@ a:hover {
 
   .hero__actions .btn {
     text-align: center;
+    width: 100%;
   }
 
   .hero__stars { display: none; }
