@@ -1399,7 +1399,7 @@ a:hover {
     right: auto;
     bottom: auto;
     order: 1;
-    margin-top: auto;
+    margin-top: -2rem;
     width: 100%;
     pointer-events: none;
     overflow: hidden;
@@ -1431,7 +1431,12 @@ a:hover {
   }
 
   .hero__credits {
-    display: none;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .hero__art-credit {
+    font-size: 0.85rem;
   }
 
   .hero__actions {
