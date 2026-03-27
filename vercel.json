@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd the-drillmaster-site && npm ci",
+  "buildCommand": "cd the-drillmaster-site && npm run build",
+  "outputDirectory": "the-drillmaster-site/dist"
+}
