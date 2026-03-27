@@ -193,3 +193,54 @@ function ambientSparkle() {
 
 setTimeout(ambientSparkle, 3000);
 
+// --- Contact email copy + toast ---
+
+const contactCopyBtn = document.getElementById('contact-copy-email');
+const siteToast = document.getElementById('site-toast');
+let toastTimer = null;
+
+function showToast(message) {
+  if (!siteToast) return;
+  siteToast.textContent = message;
+  siteToast.hidden = false;
+  siteToast.classList.add('is-visible');
+  if (toastTimer) window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    siteToast.classList.remove('is-visible');
+    window.setTimeout(() => {
+      siteToast.hidden = true;
+    }, 200);
+  }, 2200);
+}
+
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const helper = document.createElement('textarea');
+  helper.value = text;
+  helper.setAttribute('readonly', '');
+  helper.style.position = 'absolute';
+  helper.style.left = '-9999px';
+  document.body.appendChild(helper);
+  helper.select();
+  const copied = document.execCommand('copy');
+  document.body.removeChild(helper);
+  if (!copied) throw new Error('Copy command failed');
+}
+
+if (contactCopyBtn) {
+  contactCopyBtn.addEventListener('click', async () => {
+    const email = contactCopyBtn.getAttribute('data-copy-email');
+    if (!email) return;
+    try {
+      await copyTextToClipboard(email);
+      showToast('Email copied');
+    } catch (err) {
+      showToast('Could not copy email');
+    }
+  });
+}
+

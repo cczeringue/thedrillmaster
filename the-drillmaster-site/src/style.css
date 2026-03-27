@@ -156,6 +156,24 @@ a:hover {
   color: var(--ink);
 }
 
+.nav__cta--tertiary-white {
+  background: transparent;
+  color: var(--white);
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.24em;
+}
+
+.nav__cta--tertiary-white:hover {
+  background: transparent;
+  color: var(--white);
+  text-decoration-thickness: 2px;
+}
+
 /* Hamburger toggle — hidden on desktop */
 .nav__toggle {
   display: none;
@@ -295,6 +313,25 @@ a:hover {
 .btn--teal:hover {
   background: var(--teal);
   color: var(--ink);
+}
+
+.btn--tertiary-white {
+  background: transparent;
+  color: var(--white);
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.24em;
+}
+
+.btn--tertiary-white:hover {
+  background: transparent;
+  color: var(--white);
+  text-decoration-thickness: 2px;
+  transform: translateY(-1px);
 }
 
 /* ============================================================
@@ -943,6 +980,144 @@ a:hover {
 }
 
 /* ============================================================
+   CONTACT
+   ============================================================ */
+
+.contact {
+  text-align: center;
+}
+
+.contact__inner {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.contact__sub {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  color: var(--cream-muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  padding-inline: 0.25rem;
+}
+
+.contact__card {
+  border: 1px solid rgba(126, 200, 190, 0.25);
+  border-radius: 6px;
+  padding: 1.5rem 1.75rem;
+  background: rgba(42, 21, 28, 0.35);
+  text-align: left;
+}
+
+.contact__label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1rem;
+}
+
+.contact__icon,
+.contact__copy-btn-icon {
+  color: var(--coral);
+  flex-shrink: 0;
+}
+
+.contact__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 2.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(126, 200, 190, 0.35);
+  border-radius: 6px;
+  color: var(--cream);
+  padding: 0.75em 1em;
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.contact__copy-btn:hover,
+.contact__copy-btn:focus-visible {
+  border-color: var(--teal);
+  background: rgba(126, 200, 190, 0.08);
+  outline: none;
+}
+
+.contact__copy-btn-copy {
+  color: var(--cream-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.contact__copy-btn-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.site-toast {
+  position: fixed;
+  left: 50%;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%) translateY(8px);
+  max-width: min(calc(100vw - 2rem), 22rem);
+  box-sizing: border-box;
+  background: var(--ink-mid);
+  border: 1px solid rgba(126, 200, 190, 0.35);
+  color: var(--cream);
+  padding: 0.6rem 0.9rem;
+  padding-left: max(0.9rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.9rem, env(safe-area-inset-right, 0px));
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(0.68rem, 2.5vw, 0.8rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 1200;
+}
+
+.site-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 600px) {
+  .contact.section {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .contact__inner {
+    max-width: 100%;
+  }
+
+  .contact__card {
+    padding: 1rem 1.15rem;
+  }
+
+  .contact__label {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ============================================================
    INSTAGRAM SECTION
    ============================================================ */
 
@@ -1514,5 +1689,25 @@ a:hover {
 
   .footer__parade img {
     height: 56px;
+  }
+
+  .contact__card {
+    padding: 1.1rem;
+  }
+
+  .contact__label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .contact__copy-btn {
+    justify-content: space-between;
+    font-size: 0.98rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .hero__actions .btn {
+    width: auto;
   }
 }
