@@ -32,6 +32,10 @@ html {
   scroll-behavior: smooth;
 }
 
+#tickets {
+  scroll-margin-top: 7rem;
+}
+
 body {
   font-family: var(--font-body);
   font-size: 1.125rem;
@@ -57,9 +61,46 @@ a:hover {
    NAV
    ============================================================ */
 
-.nav {
+.announcement-banner {
   position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 42px;
+  padding: 0.45rem 1rem;
+  background: var(--coral);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 12px rgba(41, 21, 27, 0.18);
+}
+
+.announcement-banner:hover {
+  background: var(--coral-dark);
+  color: var(--ink);
+}
+
+.announcement-banner strong {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+  white-space: nowrap;
+}
+
+.nav {
+  position: fixed;
+  top: 42px;
   left: 0;
   right: 0;
   z-index: 900;
@@ -195,6 +236,17 @@ a:hover {
 
 /* Mobile nav */
 @media (max-width: 1200px) {
+  .announcement-banner {
+    min-height: 48px;
+    gap: 0.45rem;
+    padding: 0.5rem 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .nav {
+    top: 48px;
+  }
+
   .nav__toggle {
     display: flex;
     z-index: 2;
@@ -726,6 +778,199 @@ a:hover {
 .tickets__widget {
   max-width: 680px;
   margin: 0 auto;
+}
+
+.staged-cast {
+  max-width: 860px;
+  margin: 3.5rem auto 0;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border: 2px solid var(--coral);
+  outline: 1px solid rgba(41, 21, 27, 0.2);
+  outline-offset: -0.55rem;
+  background: var(--cream);
+  color: var(--ink);
+  position: relative;
+  box-shadow: 0 14px 0 rgba(41, 21, 27, 0.18);
+}
+
+.staged-cast::before,
+.staged-cast::after {
+  content: '';
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  width: 0.55rem;
+  border-top: 2px solid var(--coral);
+  border-bottom: 2px solid var(--coral);
+}
+
+.staged-cast::before {
+  left: 1rem;
+  border-left: 2px solid var(--coral);
+}
+
+.staged-cast::after {
+  right: 1rem;
+  border-right: 2px solid var(--coral);
+}
+
+.staged-cast__eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--coral-dark);
+  margin-bottom: 0.45rem;
+}
+
+.staged-cast__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.8vw, 3.35rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--ink);
+  margin-bottom: 0.45rem;
+}
+
+.staged-cast__date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  font-style: italic;
+  color: var(--ink-mid);
+  margin-bottom: 1.7rem;
+}
+
+.staged-cast__date::before,
+.staged-cast__date::after {
+  content: '';
+  width: min(7rem, 18vw);
+  border-bottom: 1px solid rgba(41, 21, 27, 0.28);
+}
+
+.staged-cast__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.58rem 2rem;
+  list-style: none;
+  position: relative;
+  z-index: 1;
+}
+
+.staged-cast__list a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  color: var(--ink);
+  padding: 0.2rem 0;
+  text-decoration: none;
+}
+
+.staged-cast__featured {
+  grid-column: 1 / -1;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.staged-cast__featured + .staged-cast__featured {
+  margin-top: -0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.staged-cast__featured a {
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.staged-cast__list strong {
+  font-family: var(--font-display);
+  font-size: clamp(0.98rem, 2vw, 1.12rem);
+  line-height: 1.2;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.staged-cast__featured--primary strong {
+  color: var(--coral-dark);
+  font-size: clamp(1.45rem, 4vw, 2.05rem);
+}
+
+.staged-cast__featured--secondary strong {
+  font-size: clamp(1.18rem, 3vw, 1.55rem);
+}
+
+.staged-cast__list span {
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 1px dotted rgba(41, 21, 27, 0.45);
+  transform: translateY(-0.25em);
+}
+
+.staged-cast__list em {
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  line-height: 1.3;
+  color: var(--ink-mid);
+  font-style: italic;
+  text-align: right;
+}
+
+.staged-cast__featured em {
+  font-size: clamp(0.98rem, 2.2vw, 1.12rem);
+}
+
+.staged-cast__list a:hover strong,
+.staged-cast__list a:focus-visible strong {
+  color: var(--coral-dark);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
+}
+
+.staged-cast__list a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+@media (max-width: 700px) {
+  .staged-cast {
+    padding: 1.5rem;
+    outline-offset: -0.35rem;
+    box-shadow: 0 10px 0 rgba(41, 21, 27, 0.18);
+  }
+
+  .staged-cast__list {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .staged-cast__list a {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+
+  .staged-cast__list span {
+    display: none;
+  }
+
+  .staged-cast__list em {
+    text-align: left;
+  }
+
+  .staged-cast__featured a {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 /* ============================================================
@@ -1344,6 +1589,28 @@ a:hover {
   font-style: italic;
 }
 
+.press-cast__intro {
+  margin-top: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.press-cast {
+  margin: 0 0 0 1.15rem;
+  padding: 0;
+  list-style: disc;
+  font-size: 0.95em;
+  line-height: 1.65;
+  color: var(--cream-muted);
+}
+
+.press-cast li {
+  margin-bottom: 0.35em;
+}
+
+.press-cast li:last-child {
+  margin-bottom: 0;
+}
+
 .bio-modal__footer {
   padding: 1rem 2rem;
   border-top: 1px solid rgba(126, 200, 190, 0.1);
@@ -1544,6 +1811,10 @@ a:hover {
 .bio-page__body em {
   color: var(--teal);
   font-style: italic;
+}
+
+.bio-page__body .press-cast__intro {
+  margin-top: 1.5rem;
 }
 
 .bio-page__links {
