@@ -10,6 +10,6 @@ await page.setViewportSize({ width: 1200, height: 1600 });
 await page.goto('file://' + resolve(__dirname, 'og-template.html'));
 // Wait for fonts to load
 await page.waitForTimeout(2000);
-await page.screenshot({ path: resolve(__dirname, 'public/og-image.png'), type: 'png' });
+await page.screenshot({ path: resolve(__dirname, 'public/og-image-v2.png'), type: 'png' });
 await browser.close();
-console.log('Generated public/og-image.png (1200x1600)');
+console.log('Generated public/og-image-v2.png (1200x1600)');
