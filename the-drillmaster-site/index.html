@@ -21,14 +21,14 @@
   <meta name="twitter:image:alt" content="The Drillmaster, the mostly true story of America's GAYEST founding daddy." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,soft,wonk,wght@0,9..144,0,0,400;0,9..144,0,0,600;0,9..144,0,0,700;0,9..144,0,0,900;1,9..144,0,0,400;1,9..144,0,0,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
 
-  <a href="#tickets" class="announcement-banner" aria-label="Staged Reading: May 3, The Elysian. Jump to tickets">
-    <span>Staged Reading: May 3, The Elysian</span>
-    <strong>Get Tickets</strong>
+  <a href="#newsletter" class="announcement-banner" aria-label="New date: October 13, 7:30pm at The Elysian. Join the email list for tickets.">
+    <span>Oct 13 · 7:30pm · The Elysian</span>
+    <strong>Join the list for tickets</strong>
   </a>
 
   <!-- ═══════════════════════════════════════════════════════ NAV -->
@@ -47,8 +47,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         <span class="nav__ig-label">Follow Us</span>
       </a>
-      <a href="https://www.superfanbase.com/show/info/5c2d22a6-46b7-406c-a496-5bd09af3b8c9/" target="_blank" rel="noopener" class="nav__cta nav__cta--tertiary-white">Fund the Drillmaster</a>
-      <a href="#tickets" class="nav__cta">Get Tickets</a>
+      <a href="#newsletter" class="nav__cta">Join the List</a>
     </div>
   </nav>
 
@@ -86,19 +85,36 @@
         />
       </div>
 
-      <p class="hero__pedigree">From the minds behind <a href="https://luigithemusical.info/" target="_blank" rel="noopener"><em>Luigi the Musical</em></a> and Comedy Central's <a href="https://www.paramountplus.com/shows/badass-bitches-of-history/" target="_blank" rel="noopener"><em>Bad Ass Bitches of History</em></a></p>
-
       <p class="hero__tagline">The mostly true story of America's <span class="fabulous">GAYEST</span> founding daddy.</p>
 
-      <p class="hero__credits">
-        Conceived by <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button><br />
-        Written by <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button> &amp; <button type="button" class="hero__credit-name" data-bio="caleb">Caleb Zeringue</button>
-      </p>
-      <p class="hero__art-credit">Art by <a href="https://www.instagram.com/levihastingsart/" target="_blank" rel="noopener">Levi Hastings</a></p>
+      <dl class="hero__credits">
+        <div class="hero__credit">
+          <dt>Conceived by</dt>
+          <dd>
+            <button type="button" class="hero__credit-name" data-bio="caleb">Caleb Zeringue</button>
+            <span class="hero__credit-join" aria-hidden="true">and</span>
+            <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button>
+          </dd>
+        </div>
+        <div class="hero__credit">
+          <dt>Written by</dt>
+          <dd>
+            <button type="button" class="hero__credit-name" data-bio="jenny">Jenny Zigrino</button>,
+            <button type="button" class="hero__credit-name" data-bio="caleb">Caleb Zeringue</button>
+            <span class="hero__credit-join" aria-hidden="true">and</span>
+            <button type="button" class="hero__credit-name" data-bio="jeffrey">Jeffrey Jay</button>
+          </dd>
+        </div>
+        <div class="hero__credit hero__credit--art">
+          <dt>Art by</dt>
+          <dd>
+            <a class="hero__credit-name" href="https://www.instagram.com/levihastingsart/" target="_blank" rel="noopener">Levi Hastings</a>
+          </dd>
+        </div>
+      </dl>
 
       <div class="hero__actions">
-        <a href="#tickets" class="btn btn--coral">Get drilled May 3, Elysian &rarr;</a>
-        <a href="https://www.superfanbase.com/show/info/5c2d22a6-46b7-406c-a496-5bd09af3b8c9/" target="_blank" rel="noopener" class="btn btn--tertiary-white">Fund the Drillmaster</a>
+        <a href="#newsletter" class="btn btn--coral">Join the list for Oct 13 &rarr;</a>
       </div>
     </div>
   </section>
@@ -116,39 +132,29 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════════════ TICKETS -->
+  <!-- ═══════════════════════════════════════════════════════ SHOW DATE / CAST -->
   <section class="section section--light" id="tickets" aria-labelledby="tickets-heading">
-    <h2 class="section__heading" id="tickets-heading">Get Your Tickets</h2>
     <div class="tickets__deco" aria-hidden="true">
       <img src="/brand/soldier-cta-dark.svg" alt="" width="180" />
     </div>
-    <div class="tickets__widget">
-      <div id="seated-55fdf2c0" data-artist-id="95413a92-0d4e-4805-b943-d731c97e289c" data-css-version="3"></div>
+    <div class="tickets-tease">
+      <p class="tickets-tease__eyebrow">Staged Reading</p>
+      <h2 class="tickets-tease__heading" id="tickets-heading">October 13</h2>
+      <p class="tickets-tease__meta">7:30pm · The Elysian</p>
+      <p class="tickets-tease__copy">Tickets aren't on sale yet. They'll drop to the email list first — get on it so you don't miss the drill.</p>
+      <a href="#newsletter" class="btn btn--coral">Join the list &rarr;</a>
     </div>
-    <div class="staged-cast" aria-labelledby="staged-cast-heading">
-      <p class="staged-cast__eyebrow">Come Get Drilled</p>
-      <h3 class="staged-cast__heading" id="staged-cast-heading">Staged Reading Cast</h3>
-      <p class="staged-cast__date">May 3 · The Elysian</p>
-      <ul class="staged-cast__list">
-        <li class="staged-cast__featured staged-cast__featured--primary"><a href="https://www.instagram.com/jennyzigrino/" target="_blank" rel="noopener" aria-label="Jenny Zigrino on Instagram"><strong>Jenny Zigrino</strong><span aria-hidden="true"></span><em>Baron Friedrich Wilhelm von Steuben</em></a></li>
-        <li class="staged-cast__featured staged-cast__featured--secondary"><a href="https://www.instagram.com/caleb.meringue/" target="_blank" rel="noopener" aria-label="Caleb Zeringue on Instagram"><strong>Caleb Zeringue</strong><span aria-hidden="true"></span><em>Alexander Hamilton</em></a></li>
-        <li><a href="https://www.instagram.com/smalljonnystein/" target="_blank" rel="noopener" aria-label="Jonny Stein on Instagram"><strong>Jonny Stein</strong><span aria-hidden="true"></span><em>John Laurens</em></a></li>
-        <li><a href="https://www.instagram.com/heyjeffreyjay/" target="_blank" rel="noopener" aria-label="Jeffrey Jay on Instagram"><strong>Jeffrey Jay</strong><span aria-hidden="true"></span><em>Pierre Du Ponceau</em></a></li>
-        <li><a href="https://www.instagram.com/bobcatgoldthwait/" target="_blank" rel="noopener" aria-label="Bobcat Goldthwait on Instagram"><strong>Bobcat Goldthwait</strong><span aria-hidden="true"></span><em>George Washington</em></a></li>
-        <li><a href="https://www.instagram.com/cameronesposito/" target="_blank" rel="noopener" aria-label="Cameron Esposito on Instagram"><strong>Cameron Esposito</strong><span aria-hidden="true"></span><em>Benjamin Walker</em></a></li>
-        <li><a href="https://www.instagram.com/adamconover/" target="_blank" rel="noopener" aria-label="Adam Conover on Instagram"><strong>Adam Conover</strong><span aria-hidden="true"></span><em>Narrator</em></a></li>
-        <li><a href="https://www.instagram.com/dylanadler_/" target="_blank" rel="noopener" aria-label="Dylan Adler on Instagram"><strong>Dylan Adler</strong><span aria-hidden="true"></span><em>William North</em></a></li>
-        <li><a href="https://www.instagram.com/emon.elboudwarej/" target="_blank" rel="noopener" aria-label="Emon Elboudwarej on Instagram"><strong>Emon Elboudwarej</strong><span aria-hidden="true"></span><em>Franklin / Harbottle</em></a></li>
-        <li><a href="https://www.instagram.com/shitfromkiran/" target="_blank" rel="noopener" aria-label="Kiran Deol on Instagram"><strong>Kiran Deol</strong><span aria-hidden="true"></span><em>Silas / Increase</em></a></li>
-        <li><a href="https://www.instagram.com/lady.bushra/" target="_blank" rel="noopener" aria-label="Lady Bushra on Instagram"><strong>Lady Bushra</strong><span aria-hidden="true"></span><em>Woman / Cabbage Jr</em></a></li>
-        <li><a href="https://www.instagram.com/chescaleigh/" target="_blank" rel="noopener" aria-label="Franchesca Ramsey on Instagram"><strong>Franchesca Ramsey</strong><span aria-hidden="true"></span><em>Thomas Conway</em></a></li>
-      </ul>
+    <div class="staged-cast" id="team" aria-labelledby="staged-cast-heading">
+      <p class="staged-cast__eyebrow">Who's Who</p>
+      <h3 class="staged-cast__heading" id="staged-cast-heading">Cast</h3>
+      <p class="staged-cast__tba">Cast to be announced soon.</p>
+      <p class="staged-cast__date">Oct 13 · 7:30pm · The Elysian</p>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════ CREATIVE TEAM -->
-  <section class="section section--mid" id="team" aria-labelledby="team-heading">
-    <h2 class="section__heading" id="team-heading">The Creative Team</h2>
+  <section class="section section--mid" id="creators" aria-labelledby="creators-heading">
+    <h2 class="section__heading" id="creators-heading">The Creative Team</h2>
     <div class="team__grid">
 
       <button type="button" class="creator-card" data-bio="jenny" aria-haspopup="dialog" aria-label="Open Jenny Zigrino bio">
@@ -157,7 +163,7 @@
           <img class="creator-card__shield" src="/brand/portrait-shield.svg" alt="" aria-hidden="true" />
         </div>
         <span class="creator-card__name">Jenny Zigrino</span>
-        <span class="creator-card__role">Creator · Von Steuben</span>
+        <span class="creator-card__role">Creator &amp; Writer</span>
         <span class="creator-card__cta">Read Bio</span>
       </button>
 
@@ -167,7 +173,17 @@
           <img class="creator-card__shield" src="/brand/portrait-shield.svg" alt="" aria-hidden="true" />
         </div>
         <span class="creator-card__name">Caleb Zeringue</span>
-        <span class="creator-card__role">Co-Creator · Hamilton</span>
+        <span class="creator-card__role">Creator &amp; Writer</span>
+        <span class="creator-card__cta">Read Bio</span>
+      </button>
+
+      <button type="button" class="creator-card" data-bio="jeffrey" aria-haspopup="dialog" aria-label="Open Jeffrey Jay bio">
+        <div class="creator-card__figure">
+          <img class="creator-card__photo" src="/bios/jeffrey.png" alt="Jeffrey Jay" width="160" height="160" />
+          <img class="creator-card__shield" src="/brand/portrait-shield.svg" alt="" aria-hidden="true" />
+        </div>
+        <span class="creator-card__name">Jeffrey Jay</span>
+        <span class="creator-card__role">Writer</span>
         <span class="creator-card__cta">Read Bio</span>
       </button>
 
@@ -178,7 +194,7 @@
   <section class="newsletter" id="newsletter" aria-labelledby="newsletter-heading">
     <img class="newsletter__soldier" src="/brand/soldier-stunning-light.svg" alt="" aria-hidden="true" />
     <h2 class="newsletter__heading" id="newsletter-heading">Stay Drilled</h2>
-    <p class="newsletter__sub">Get notified when you should be so lucky to see Friedrich live.</p>
+    <p class="newsletter__sub">October 13 tickets drop here first. Get on the list.</p>
     <p class="newsletter__notice">We didn't have email addresses back then. But we need them now.</p>
     <div id="newsletter-wrap">
       <form class="newsletter__form" id="newsletter-form" aria-label="Newsletter signup">
@@ -192,15 +208,6 @@
     <p class="newsletter__social">
       Follow the show on <a href="https://www.instagram.com/thedrillmasterplay/" target="_blank" rel="noopener">Instagram</a>
     </p>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════ SUPPORT -->
-  <section class="support" id="support">
-    <div class="support__inner">
-      <h2 class="support__heading">Fund the Drillmaster</h2>
-      <p class="support__text">Help bring Friedrich's fabulous story to the stage. Every contribution fuels costumes, rehearsals, and historically inaccurate wigs.</p>
-      <a href="https://www.superfanbase.com/show/info/5c2d22a6-46b7-406c-a496-5bd09af3b8c9/" target="_blank" rel="noopener" class="btn btn--coral">Become a Patron &rarr;</a>
-    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════ INSTAGRAM -->
@@ -226,11 +233,11 @@
           type="button"
           class="contact__copy-btn"
           id="contact-copy-email"
-          data-copy-email="km@sharkpartymedia.com"
+          data-copy-email="thedrillmasterplay@gmail.com"
           aria-label="Copy media contact email"
         >
           <span class="contact__copy-btn-icon" aria-hidden="true">✉</span>
-          <span class="contact__copy-btn-text">km@sharkpartymedia.com</span>
+          <span class="contact__copy-btn-text">thedrillmasterplay@gmail.com</span>
           <span class="contact__copy-btn-copy" aria-hidden="true">⧉</span>
         </button>
       </div>
@@ -262,9 +269,9 @@
 
         <div id="bio-content-jenny" class="bio-modal__body" hidden>
           <div class="bio-modal__header">
-            <p class="bio-modal__role">Creator · Friedrich Wilhelm Von Steuben</p>
+            <p class="bio-modal__role">Creator &amp; Writer</p>
             <h2 id="bio-modal-title-jenny" class="bio-modal__name">Jenny Zigrino</h2>
-            <p class="bio-modal__character">Von Steuben</p>
+            <p class="bio-modal__character">The Drillmaster</p>
             <div class="bio-modal__portrait-wrap">
               <img class="bio-modal__portrait" src="/bios/jenny.png" alt="" width="120" height="120" />
             </div>
@@ -282,9 +289,9 @@
 
         <div id="bio-content-caleb" class="bio-modal__body" hidden>
           <div class="bio-modal__header">
-            <p class="bio-modal__role">Co-Creator · Hamilton</p>
+            <p class="bio-modal__role">Creator &amp; Writer</p>
             <h2 id="bio-modal-title-caleb" class="bio-modal__name">Caleb Zeringue</h2>
-            <p class="bio-modal__character">Hamilton</p>
+            <p class="bio-modal__character">The Drillmaster</p>
             <div class="bio-modal__portrait-wrap">
               <img class="bio-modal__portrait" src="/bios/caleb.png" alt="" width="120" height="120" />
             </div>
@@ -296,22 +303,30 @@
           </div>
           <div class="bio-modal__text">
             <p>Caleb is a stand-up comic, writer, and co-creator of <em>Luigi the Musical</em>. As a stand-up, he's a NYC Queer Comedy Festival finalist, featured at Edinburgh Fringe, LGBTLolFest, Vice City Comedy Festival and featured for national headliners including Jenny Zigrino and Lady Bushra — who STILL won't talk to him. He grew up across 16 states (his dad insists he's not bipolar, why do you ask?!). His comedy is unapologetically queer and southern, with a suspicious amount of emotional vulnerability and "bless your heart" energy.</p>
-            <p>He and Jenny Zigrino (Dropout.TV, Sirius XM) are part of the writing team of a new theatrical production, <em>The Drillmaster</em>, with a first reading set for May 3rd at The Elysian.</p>
-            <p class="press-cast__intro"><strong>Staged read cast</strong></p>
-            <ul class="press-cast">
-              <li><strong>Jenny Zigrino</strong> &mdash; Baron Friedrich Wilhelm von Steuben</li>
-              <li><strong>Caleb Zeringue</strong> &mdash; Alexander Hamilton</li>
-              <li><strong>Jonny Stein</strong> &mdash; John Laurens</li>
-              <li><strong>Jeffrey Jay</strong> &mdash; Pierre Du Ponceau</li>
-              <li><strong>Bobcat Goldthwait</strong> &mdash; George Washington</li>
-              <li><strong>Cameron Esposito</strong> &mdash; Benjamin Walker</li>
-              <li><strong>Adam Conover</strong> &mdash; Narrator</li>
-              <li><strong>Dylan Adler</strong> &mdash; William North</li>
-              <li><strong>Emon Elboudwarej</strong> &mdash; Franklin / Harbottle</li>
-              <li><strong>Kiran Deol</strong> &mdash; Silas / Increase</li>
-              <li><strong>Lady Bushra</strong> &mdash; Woman / Cabbage Jr</li>
-              <li><strong>Francesca Ramsey</strong> &mdash; Thomas Conway</li>
-            </ul>
+            <p>He and Jenny Zigrino (Dropout.TV, Sirius XM) are part of the writing team of a new theatrical production, <em>The Drillmaster</em>, with a staged reading set for October 13th at The Elysian.</p>
+            <p class="press-cast__intro"><strong>Cast</strong></p>
+            <p>Cast to be announced soon.</p>
+          </div>
+        </div>
+
+        <div id="bio-content-jeffrey" class="bio-modal__body" hidden>
+          <div class="bio-modal__header">
+            <p class="bio-modal__role">Writer</p>
+            <h2 id="bio-modal-title-jeffrey" class="bio-modal__name">Jeffrey Jay</h2>
+            <p class="bio-modal__character">The Drillmaster</p>
+            <div class="bio-modal__portrait-wrap">
+              <img class="bio-modal__portrait" src="/bios/jeffrey.png" alt="" width="120" height="120" />
+            </div>
+            <div class="bio-modal__rule" aria-hidden="true"></div>
+            <div class="bio-modal__links">
+              <a class="bio-modal__link-btn" href="https://jeffreyjaycomedy.com/" target="_blank" rel="noopener">jeffreyjaycomedy.com</a>
+              <a class="bio-modal__link-btn" href="https://www.instagram.com/heyjeffreyjay/" target="_blank" rel="noopener">@heyjeffreyjay</a>
+            </div>
+          </div>
+          <div class="bio-modal__text">
+            <p>Jeffrey Jay is a Los Angeles-based stand-up comedian and writer from a town so Texas it's called Texas City, Texas. With a Republican judge for a mother and a father who works on oil tankers, he decided life wasn't tough enough and went into comedy.</p>
+            <p>As a writer, he's a Consulting Producer on The Game Awards, Head Comedy Writer for Feast of Fun, and has worked on <em>Riverdale</em> and <em>Pretty Little Liars</em>. He's been shortlisted by the BBC Writers' Room and advanced in the Warner Bros. Writing Fellowship, Austin Film Festival, and Sundance. In 2025 he was Creative Director of Mary Lynn Rajskub's comedy special <em>Road Gig</em>.</p>
+            <p>On stage, he's toured the college circuit since 2011, been named one of The Advocate's top transgender comedians, and been featured in The New York Times. He joins Jenny Zigrino and Caleb Zeringue as a writer on <em>The Drillmaster</em>.</p>
           </div>
         </div>
 
@@ -325,7 +340,6 @@
   <!-- screen-reader only utility -->
   <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
 
-  <script src="https://widget.seated.com/app.js" defer></script>
   <script async src="https://www.instagram.com/embed.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>

@@ -45,6 +45,7 @@ const bioClose = bioModal?.querySelector('.bio-modal__close');
 const bioContents = {
   jenny: document.getElementById('bio-content-jenny'),
   caleb: document.getElementById('bio-content-caleb'),
+  jeffrey: document.getElementById('bio-content-jeffrey'),
 };
 
 let lastFocusedBeforeModal = null;
@@ -129,7 +130,11 @@ if (newsletterForm) {
         newsletterForm.hidden = true;
         newsletterSuccess.hidden = false;
       } else {
-        newsletterError.textContent = data.error || 'Nein. This did not work. Check yourself and try again.';
+        const fallback =
+          res.status >= 500
+            ? 'Server hiccup. Try again in a moment.'
+            : 'Nein. This did not work. Check yourself and try again.';
+        newsletterError.textContent = data.error || fallback;
         newsletterError.hidden = false;
       }
     } catch (err) {
