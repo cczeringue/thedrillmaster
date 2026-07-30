@@ -50,6 +50,10 @@ const bioContents = {
 
 let lastFocusedBeforeModal = null;
 
+function getScrollbarWidth() {
+  return window.innerWidth - document.documentElement.clientWidth;
+}
+
 function openBioModal(key) {
   const content = bioContents[key];
   if (!bioModal || !content) return;
@@ -63,23 +67,17 @@ function openBioModal(key) {
     }
   });
   content.hidden = false;
-  document.body.style.overflow = 'hidden';
-  document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth ? `${getScrollbarWidth()}px` : '0';
+  lockBodyScroll();
   requestAnimationFrame(() => bioClose?.focus());
 }
 
 function closeBioModal() {
   if (!bioModal) return;
   bioModal.setAttribute('hidden', '');
-  document.body.style.overflow = '';
-  document.body.style.paddingRight = '';
+  unlockBodyScroll();
   if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
     lastFocusedBeforeModal.focus();
   }
-}
-
-function getScrollbarWidth() {
-  return window.innerWidth - document.documentElement.clientWidth;
 }
 
 bioModal?.addEventListener('keydown', (e) => {
@@ -97,6 +95,51 @@ document.querySelectorAll('[data-bio]').forEach((el) => {
     if (key && bioContents[key]) openBioModal(key);
   });
 });
+
+// --- Instagram follow modal (after newsletter signup) ---
+
+const igFollowModal = document.getElementById('ig-follow-modal');
+const igFollowBackdrop = igFollowModal?.querySelector('.ig-follow-modal__backdrop');
+const igFollowClose = igFollowModal?.querySelector('.ig-follow-modal__close');
+const igFollowSkip = igFollowModal?.querySelector('.ig-follow-modal__skip');
+let lastFocusedBeforeIgModal = null;
+
+function lockBodyScroll() {
+  document.body.style.overflow = 'hidden';
+  const pad = getScrollbarWidth();
+  document.body.style.paddingRight = pad ? `${pad}px` : '0';
+}
+
+function unlockBodyScroll() {
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
+}
+
+function openIgFollowModal() {
+  if (!igFollowModal) return;
+  lastFocusedBeforeIgModal = document.activeElement;
+  igFollowModal.removeAttribute('hidden');
+  lockBodyScroll();
+  requestAnimationFrame(() => igFollowClose?.focus());
+}
+
+function closeIgFollowModal() {
+  if (!igFollowModal) return;
+  igFollowModal.setAttribute('hidden', '');
+  unlockBodyScroll();
+  if (lastFocusedBeforeIgModal && typeof lastFocusedBeforeIgModal.focus === 'function') {
+    lastFocusedBeforeIgModal.focus();
+  }
+}
+
+igFollowModal?.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape' || igFollowModal.hasAttribute('hidden')) return;
+  closeIgFollowModal();
+});
+
+igFollowBackdrop?.addEventListener('click', closeIgFollowModal);
+igFollowClose?.addEventListener('click', closeIgFollowModal);
+igFollowSkip?.addEventListener('click', closeIgFollowModal);
 
 // --- Newsletter (Brevo via API, same pattern as luigithemusical.info) ---
 
@@ -129,6 +172,7 @@ if (newsletterForm) {
       if (res.ok && data.success) {
         newsletterForm.hidden = true;
         newsletterSuccess.hidden = false;
+        openIgFollowModal();
       } else {
         const fallback =
           res.status >= 500
