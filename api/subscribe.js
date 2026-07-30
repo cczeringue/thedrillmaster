@@ -70,12 +70,23 @@ async function subscribeEmail(email, env = process.env) {
     };
   }
 
+  if (/unrecognised ip|authorised_ips|authorized_ips/i.test(message)) {
+    return {
+      status: 500,
+      body: {
+        error:
+          'Brevo is blocking this server IP. Turn off IP allowlisting at https://app.brevo.com/security/authorised_ips',
+      },
+    };
+  }
+
   if (/api key is not enabled|unauthori[sz]ed|invalid api key/i.test(message)) {
     return {
       status: 500,
       body: {
         error:
           'Brevo API key is disabled or invalid. Create a new key in Brevo and update BREVO_API_KEY.',
+        detail: message || undefined,
       },
     };
   }
