@@ -111,11 +111,15 @@ a:hover {
 }
 
 .announcement-banner strong {
-  color: var(--brass);
+  color: var(--coral);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 0.2em;
   white-space: nowrap;
+}
+
+.announcement-banner:hover strong {
+  color: var(--cream);
 }
 
 .nav {
