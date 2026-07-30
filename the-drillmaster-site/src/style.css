@@ -2075,6 +2075,11 @@ a.hero__credit-name {
     gap: 2.75rem;
   }
 
+  .staged-cast {
+    margin-top: 2.75rem;
+  }
+}
+
 /* —— Tablet portrait + mobile: poster stack —— */
 @media (max-width: 1023px) {
   .hero {
