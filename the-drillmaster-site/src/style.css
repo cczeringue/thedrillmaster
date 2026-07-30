@@ -1085,9 +1085,9 @@ a.hero__credit-name {
 .team__grid {
   display: flex;
   justify-content: center;
-  gap: clamp(1.75rem, 4vw, 3rem);
+  gap: clamp(2.5rem, 5vw, 4rem);
   flex-wrap: wrap;
-  max-width: 720px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
@@ -1101,7 +1101,7 @@ a.hero__credit-name {
   gap: 0.75rem;
   padding: 0;
   text-align: center;
-  max-width: 260px;
+  width: min(240px, 100%);
   transition: transform 0.2s ease;
 }
 
@@ -1111,8 +1111,8 @@ a.hero__credit-name {
 
 .creator-card__figure {
   position: relative;
-  width: 160px;
-  height: 200px;
+  width: 220px;
+  height: 240px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1120,15 +1120,15 @@ a.hero__credit-name {
 }
 
 .creator-card__photo {
-  width: 115px;
-  height: 145px;
+  width: 118px;
+  height: 148px;
   object-fit: cover;
   object-position: top center;
   border-radius: 50%;
   display: block;
   position: relative;
   z-index: 1;
-  filter: grayscale(20%);
+  filter: grayscale(20%) contrast(1.05);
 }
 
 .creator-card__shield {
@@ -1136,8 +1136,9 @@ a.hero__credit-name {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(90deg);
-  height: 100%;
+  height: 88%;
   width: auto;
+  max-width: 100%;
   pointer-events: none;
   z-index: 0;
 }
@@ -2071,13 +2072,8 @@ a.hero__credit-name {
   }
 
   .team__grid {
-    gap: 2rem;
+    gap: 2.75rem;
   }
-
-  .staged-cast {
-    margin-top: 2.75rem;
-  }
-}
 
 /* —— Tablet portrait + mobile: poster stack —— */
 @media (max-width: 1023px) {
@@ -2175,7 +2171,7 @@ a.hero__credit-name {
   }
 
   .team__grid {
-    gap: 2rem;
+    gap: 2.75rem;
   }
 
   .tickets-tease {
