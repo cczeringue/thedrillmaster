@@ -989,15 +989,24 @@ a.hero__credit-name {
   list-style: none;
   position: relative;
   z-index: 1;
+  margin: 1.15rem 0 1.35rem;
+  padding: 0;
 }
 
-.staged-cast__list a {
+.staged-cast__list a,
+.staged-cast__list button {
   display: flex;
   align-items: baseline;
   gap: 0.45rem;
+  width: 100%;
   color: var(--ink);
   padding: 0.2rem 0;
   text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
 }
 
 .staged-cast__featured {
@@ -1012,7 +1021,8 @@ a.hero__credit-name {
   margin-bottom: 0.75rem;
 }
 
-.staged-cast__featured a {
+.staged-cast__featured a,
+.staged-cast__featured button {
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
@@ -1055,14 +1065,17 @@ a.hero__credit-name {
 }
 
 .staged-cast__list a:hover strong,
-.staged-cast__list a:focus-visible strong {
+.staged-cast__list a:focus-visible strong,
+.staged-cast__list button:hover strong,
+.staged-cast__list button:focus-visible strong {
   color: var(--coral-dark);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 0.18em;
 }
 
-.staged-cast__list a:focus-visible {
+.staged-cast__list a:focus-visible,
+.staged-cast__list button:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 4px;
 }
@@ -1077,7 +1090,8 @@ a.hero__credit-name {
     gap: 0.45rem;
   }
 
-  .staged-cast__list a {
+  .staged-cast__list a,
+  .staged-cast__list button {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.05rem;
@@ -1091,7 +1105,8 @@ a.hero__credit-name {
     text-align: left;
   }
 
-  .staged-cast__featured a {
+  .staged-cast__featured a,
+  .staged-cast__featured button {
     align-items: center;
     text-align: center;
   }
