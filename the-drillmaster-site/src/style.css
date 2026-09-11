@@ -1021,6 +1021,11 @@ a.hero__credit-name {
   margin-bottom: 0.75rem;
 }
 
+.staged-cast__member {
+  padding: 0.45rem 0;
+  text-align: center;
+}
+
 .staged-cast__featured a,
 .staged-cast__featured button {
   align-items: center;
