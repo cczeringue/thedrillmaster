@@ -1143,9 +1143,9 @@ a.hero__credit-name {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1.25rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(166, 139, 91, 0.3);
+  gap: 1.5rem;
+  padding: 0.8rem 0.4rem;
+  border-bottom: 1px dotted rgba(166, 139, 91, 0.45);
 }
 
 .cast-profile span {
@@ -1157,12 +1157,25 @@ a.hero__credit-name {
 }
 
 .cast-profile .cast-profile__portrait {
-  width: 88px;
-  height: 108px;
-  overflow: hidden;
-  border: 1px solid var(--brass);
-  background: var(--ink);
+  width: 96px;
+  height: 96px;
   flex-shrink: 0;
+}
+
+.cast-profile .cast-profile__portrait,
+.bio-modal__body--cast .bio-modal__portrait-wrap {
+  overflow: hidden;
+  border: 3px solid var(--coral);
+  border-radius: 50%;
+  outline: 1px solid var(--teal-bg);
+  outline-offset: 4px;
+  background: var(--ink);
+}
+
+.cast-profile:hover .cast-profile__portrait,
+.cast-profile:focus-visible .cast-profile__portrait {
+  border-color: var(--teal-bg);
+  outline-color: var(--coral);
 }
 
 .cast-profile__portrait img,
@@ -1176,10 +1189,12 @@ a.hero__credit-name {
 }
 
 .portrait--dylan { --portrait-scale: 1.9; --portrait-origin: center 35%; }
-.portrait--jeremy { --portrait-scale: 1.65; --portrait-origin: center 10%; }
+.portrait--jeremy { --portrait-position: center top; --portrait-scale: 1.5; --portrait-origin: center top; }
+.portrait--chad { --portrait-position: center 30%; }
+.portrait--emon { --portrait-position: center top; }
 .portrait--leslie { --portrait-position: 100% center; --portrait-scale: 1.4; --portrait-origin: 60% 25%; }
-.portrait--mary { --portrait-position: center 30%; --portrait-scale: 2; --portrait-origin: center 25%; }
-.portrait--beth { --portrait-position: center 25%; --portrait-scale: 1.55; --portrait-origin: center 10%; }
+.portrait--mary { --portrait-position: center top; --portrait-scale: 1.75; --portrait-origin: center 25%; }
+.portrait--beth { --portrait-position: center top; --portrait-scale: 1.4; --portrait-origin: center 15%; }
 
 .cast-profile .cast-profile__copy {
   display: flex;
@@ -1212,9 +1227,9 @@ a.hero__credit-name {
 .cast-profile__cta span { display: inline; }
 
 .bio-modal__body--cast .bio-modal__portrait-wrap {
-  width: 160px;
-  height: 196px;
-  border-radius: 2px;
+  width: 168px;
+  height: 168px;
+  margin-block: 1.4rem;
 }
 
 .producer-credit {
@@ -1242,8 +1257,8 @@ a.hero__credit-name {
 }
 
 @media (max-width: 420px) {
-  .staged-cast__member .cast-profile { gap: 0.85rem; }
-  .cast-profile .cast-profile__portrait { width: 72px; height: 88px; }
+  .staged-cast__member .cast-profile { gap: 1rem; }
+  .cast-profile .cast-profile__portrait { width: 76px; height: 76px; }
   .ig-section__cta .btn { max-width: 100%; padding-inline: 1rem; }
 }
 
