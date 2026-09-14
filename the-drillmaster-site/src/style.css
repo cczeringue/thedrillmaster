@@ -39,6 +39,7 @@ html {
 
 #tickets,
 #newsletter,
+#press,
 #team {
   scroll-margin-top: 7rem;
 }
@@ -1362,55 +1363,177 @@ a.hero__credit-name {
 }
 
 /* ============================================================
-   NEWSLETTER
+   PRESS
    ============================================================ */
-
-/* Press feature */
 .press {
-  padding: 3rem 1.5rem;
+  padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
   background: var(--ink);
   border-block: 1px solid var(--ink-light);
 }
 
 .press__inner {
-  max-width: var(--content-max);
+  max-width: 62rem;
   margin-inline: auto;
+}
+
+.press__header {
+  margin-bottom: 2.5rem;
   text-align: center;
 }
 
-.press__heading {
-  margin-bottom: 0.85rem;
+.press__header .section__heading {
+  margin-bottom: 1rem;
+}
+
+.press__label {
+  margin-bottom: 1rem;
   color: var(--teal);
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .press__copy {
-  color: var(--cream);
-  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
   line-height: 1.45;
   text-wrap: balance;
 }
 
+.press__coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.press-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background: var(--ink-mid);
+  border: 1px solid var(--ink-light);
+  border-top: 3px solid var(--brass);
+}
+
+.press__meta {
+  margin-bottom: 0.65rem;
+  color: var(--cream-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.press-feature__title,
+.press-episode__title {
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.press-feature__description {
+  flex-grow: 1;
+  margin-block: 0.9rem 0.75rem;
+  line-height: 1.5;
+}
+
 .press__link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 44px;
   min-height: 44px;
-  margin-top: 0.6rem;
   padding-block: 0.65rem;
-  font-size: 1.05rem;
+  font-size: 1.125rem;
   line-height: 1.5;
   text-decoration: underline;
   text-underline-offset: 0.2em;
-  text-wrap: balance;
+}
+
+.press__link:hover {
+  color: var(--cream);
 }
 
 .press__link:focus-visible {
   outline: 2px solid var(--teal);
   outline-offset: 4px;
 }
+
+.press-feature__note {
+  color: var(--cream-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.press__label--conversations {
+  margin-top: 3rem;
+  margin-bottom: 0.35rem;
+}
+
+.press__intro {
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+}
+
+.press__episodes {
+  list-style: none;
+  border-top: 1px solid var(--ink-light);
+}
+
+.press-episode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--ink-light);
+}
+
+.press-episode__body {
+  min-width: 0;
+  max-width: 43rem;
+}
+
+.press-episode__title {
+  margin-bottom: 0.45rem;
+}
+
+.press-episode__body > p:last-child {
+  line-height: 1.5;
+}
+
+.press-episode__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .press__coverage {
+    grid-template-columns: 1fr;
+  }
+
+  .press-feature {
+    padding: 1.25rem;
+  }
+
+  .press-episode {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .press-episode__actions {
+    gap: 2rem;
+  }
+}
+
+/* ============================================================
+   NEWSLETTER
+   ============================================================ */
 
 .newsletter {
   position: relative;
