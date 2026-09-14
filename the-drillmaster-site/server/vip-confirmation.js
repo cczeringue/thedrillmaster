@@ -48,7 +48,10 @@ export function buildConfirmationEmail(guest) {
 async function sheetAction(input, options) {
   const response = await saveToGoogleSheet(input, options);
   const data = await response.json();
-  if (!response.ok || data.ok !== true) throw new Error('Email delivery record unavailable.');
+  if (!response.ok || data.ok !== true || typeof data.status !== 'string') {
+    console.error('VIP confirmation record unavailable', { action: input.action, reference: input.id, httpStatus: response.status, ok: data.ok, status: data.status, error: typeof data.error === 'string' ? data.error : undefined });
+    throw new Error('Email delivery record unavailable.');
+  }
   return data;
 }
 
@@ -61,7 +64,7 @@ export async function sendVipConfirmation(reference, options) {
     claim = await sheetAction({ action: 'claim-email', id: reference, claimId }, options);
     if (claim.status === 'sent') return 'sent';
     if (claim.status !== 'claimed') return claim.status === 'pending' ? 'pending' : 'failed';
-  } catch { return 'failed'; }
+  } catch { console.error('VIP confirmation claim failed', { reference }); return 'failed'; }
   // Use only the saved row's recipient, never editable retry details from the browser.
   const parsed = rsvpSchema.safeParse({ id: claim.reference, name: claim.name, email: claim.email, guests: claim.guests });
   if (!parsed.success || parsed.data.id !== reference) return 'failed';
