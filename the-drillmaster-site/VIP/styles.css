@@ -100,6 +100,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .bubble .invite-venue { font-size: 17px; font-weight: 700; margin-bottom: 19px; }
 .invite-more { margin: 0 -21px; padding: 12px 21px; width: calc(100% + 42px); display: flex; align-items: center; justify-content: space-between; background: transparent; border: 0; border-top: 1px solid #10101033; font-size: 13px; font-weight: 700; text-align: left; }
 .invite-more:hover { background: #1010100d; }
+.invite-poster-link { display: block; margin: 0 -21px; }
+.invite-poster { display: block; width: 100%; height: auto; }
+.message-row { animation: message-arrives 180ms ease-out; }
+@keyframes message-arrives { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+.typing-indicator { display: flex; gap: 5px; align-items: center; min-height: 28px; margin: 14px 0 0 44px; }
+.typing-indicator span { width: 5px; height: 5px; background: #aaa; border-radius: 50%; animation: typing 1s infinite alternate; }
+.typing-indicator span:nth-child(2) { animation-delay: 150ms; }
+.typing-indicator span:nth-child(3) { animation-delay: 300ms; }
+@keyframes typing { to { opacity: 0.3; } }
+.composer-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 9px; }
+.composer-footer .composer-hint { margin: 0; text-align: left; }
+.sound-toggle { display: inline-flex; align-items: center; gap: 5px; color: var(--amber); background: transparent; border: 0; font-size: 10px; padding: 5px 0 5px 5px; white-space: nowrap; }
+.rsvp-form .more-tickets { font-size: 12px; line-height: 1.5; margin: 0 0 18px; }
+.more-tickets a { text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
+@media (max-width: 370px) { .invite-poster-link { margin-inline: -14px; } }
 .read-receipt { margin: 12px 0 0 44px; font-size: 10px; letter-spacing: 0.15px; color: #919191; }
 .conversation-divider { display: flex; align-items: center; gap: 14px; margin: 32px 0 25px 44px; color: #999; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: 1.6px; }
 .conversation-divider::before, .conversation-divider::after { content: ""; flex: 1; height: 1px; background: #3b3b3b; }

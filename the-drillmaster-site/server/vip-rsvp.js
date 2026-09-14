@@ -1,4 +1,5 @@
 import { rsvpSchema, rsvpReceiptSchema } from '../VIP/lib/rsvp-validation.js';
+import { saveToGoogleSheet } from './sheets-rsvp.js';
 
 const UPSTREAM = 'https://drillmaster-vip-chat.cbiscuit.chatgpt.site/api/rsvp';
 const MAX_BYTES = 4096;
@@ -15,7 +16,7 @@ function json(body, status, headers = {}) {
   });
 }
 
-// Keep the original durable RSVP database. Its access token is server-only.
+// Google Sheets is authoritative when configured. Preserve the original backend during setup.
 // The endpoint can submit a request, never read the guest list or proxy other URLs.
 export async function handleVipRsvp(request, { env = process.env, fetchImpl = fetch } = {}) {
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405, { Allow: 'POST' });
@@ -54,10 +55,12 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
   }
   const parsed = rsvpSchema.safeParse(input);
   if (!parsed.success) return json({ error: parsed.error.issues[0]?.message ?? 'Please check your details.' }, 400);
-  if (!env.VIP_RSVP_UPSTREAM_TOKEN) return json({ error: unavailable }, 503);
+  if (!env.VIP_RSVP_SHEETS_URL && !env.VIP_RSVP_UPSTREAM_TOKEN) return json({ error: unavailable }, 503);
 
   try {
-    const response = await fetchImpl(UPSTREAM, {
+    const response = env.VIP_RSVP_SHEETS_URL
+      ? await saveToGoogleSheet(parsed.data, { env, fetchImpl })
+      : await fetchImpl(UPSTREAM, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +74,7 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
     if (!response.ok || !saved.success || saved.data.reference !== parsed.data.id) {
       return json({ error: unavailable }, 503);
     }
-    // The original endpoint returns the stored receipt on an idempotent retry.
+    // Both storage endpoints return the actual stored receipt on an idempotent retry.
     return json(saved.data, 201);
   } catch {
     return json({ error: unavailable }, 503);

@@ -7,7 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test:vip": "node --test tests/vip-rsvp.test.mjs",
+    "test:vip": "node --test tests/vip-*.test.mjs",
     "typecheck:vip": "tsc --noEmit",
     "dev": "vite",
     "build": "vite build",

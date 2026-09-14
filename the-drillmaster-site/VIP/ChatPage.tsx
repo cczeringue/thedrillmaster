@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ArrowDown, ArrowLeft, ArrowUpRight, CalendarDays, Check, ChevronRight, EllipsisVertical, MapPin, Send, Ticket, VenetianMask, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowUpRight, CalendarDays, Check, ChevronRight, EllipsisVertical, MapPin, Send, Ticket, VenetianMask, Volume2, VolumeX, X } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./components/ui/dropdown-menu";
 import { EVENT, type Topic, topicLabels } from "./lib/event";
+import { createMessageQueue } from "./lib/message-queue";
+import { useMessageSound } from "./lib/use-message-sound";
 import { rsvpReceiptSchema, rsvpSchema } from "./lib/rsvp-validation";
 
-type Message = { id: string; side: "baron" | "guest"; text?: string; topic?: Topic | "help" };
+type Message = { id: string; side: "baron" | "guest"; text?: string; topic?: Topic | "help"; intro?: boolean; invitation?: boolean; lastIntro?: boolean; delay?: number; action?: () => void };
 type RsvpReceipt = { name: string; guests: number; reference: string };
 type McpTool = {
   name: string; title: string; description: string;
@@ -92,7 +94,6 @@ function RsvpForm({ onSuccess, onClose }: { onSuccess: (receipt: RsvpReceipt) =>
         const message = result && typeof result === "object" && "error" in result && typeof result.error === "string" ? result.error : "We couldn’t verify your RSVP. Please try again.";
         throw new Error(message);
       }
-      try { sessionStorage.setItem("drillmaster-vip-receipt", JSON.stringify(saved.data)); } catch {}
       onSuccess(saved.data);
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Your RSVP hasn’t been saved. Please try again.");
@@ -108,9 +109,10 @@ function RsvpForm({ onSuccess, onClose }: { onSuccess: (receipt: RsvpReceipt) =>
       <Input className="rsvp-input" id="guest-name" name="name" autoComplete="name" placeholder="Alexander Hamilton" maxLength={100} required value={name} onChange={event => setName(event.target.value)} />
       <label htmlFor="guest-email">Email</label>
       <Input className="rsvp-input" id="guest-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" maxLength={254} required value={email} onChange={event => setEmail(event.target.value)} />
-      <label htmlFor="guest-count">Who’s coming?</label>
-      <Select value={guests} onValueChange={setGuests} disabled={busy}><SelectTrigger id="guest-count" className="rsvp-select"><SelectValue /></SelectTrigger><SelectContent className="party-menu"><SelectItem value="1">Just me</SelectItem><SelectItem value="2">Me + 1 · guest request</SelectItem></SelectContent></Select>
+      <label htmlFor="guest-count">Tickets needed</label>
+      <Select value={guests} onValueChange={setGuests} disabled={busy}><SelectTrigger id="guest-count" className="rsvp-select"><SelectValue /></SelectTrigger><SelectContent className="party-menu"><SelectItem value="1">1 ticket · just me</SelectItem><SelectItem value="2">2 tickets · me + 1</SelectItem></SelectContent></Select>
     </fieldset>
+    <p className="more-tickets">Need more than 2 tickets? <a href={`mailto:${EVENT.email}?subject=The%20Drillmaster%20VIP%20-%20additional%20tickets`}>Email {EVENT.email}</a>.</p>
     {error && <p className="form-error" role="alert">{error}</p>}
     <Button className="submit-rsvp" type="submit" disabled={busy}>{busy ? "Sending your RSVP…" : "Send my RSVP"}{!busy && <Send size={17} aria-hidden="true" />}</Button>
     <p className="privacy-copy">Your details are used to manage this invitation. An RSVP is a request; the team will confirm availability.</p>
@@ -130,12 +132,35 @@ export default function ChatPage() {
   const openTopics = useRef(new Set<Topic>());
   const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const [introComplete, setIntroComplete] = useState(false);
+  const [pending, setPending] = useState(false);
+  const { play: playSound, sound, toggle: toggleSound } = useMessageSound();
+  const queueRef = useRef<ReturnType<typeof createMessageQueue> | null>(null);
+  const rsvpQueued = useRef(false);
+
   useEffect(() => {
-    try {
-      const saved = rsvpReceiptSchema.safeParse(JSON.parse(sessionStorage.getItem("drillmaster-vip-receipt") ?? "null"));
-      if (saved.success) setReceipt(saved.data);
-    } catch {}
-  }, []);
+    // Fresh component state and queue on every page load. Saved RSVPs stay on the server.
+    const queue = createMessageQueue((message: Message) => {
+      if (message.action) message.action();
+      else setMessages(previous => [...previous, message]);
+      if (message.lastIntro) setIntroComplete(true);
+      playSound();
+    }, { onPending: (value: boolean) => setPending(value) });
+    queueRef.current = queue;
+    queue.add(
+      { id: "intro-1", side: "guest", text: "hey daddy", intro: true, delay: 600 },
+      { id: "intro-2", side: "baron", text: "Founding Daddy.", intro: true },
+      { id: "intro-3", side: "guest", text: "hosting?", intro: true },
+      { id: "intro-4", side: "baron", text: "Yes. An entire theatrical production.", intro: true },
+      { id: "intro-5", side: "guest", text: "so... role play?", intro: true, delay: 1400 },
+      { id: "intro-6", side: "baron", text: "Definitely.", intro: true },
+      { id: "invitation", side: "baron", invitation: true, intro: true, delay: 1300 },
+      { id: "intro-8", side: "guest", text: "i’m coming", intro: true, delay: 3000 },
+      { id: "intro-9", side: "baron", text: "so are the British", intro: true },
+      { id: "intro-10", side: "baron", text: "Consider this your personal invitation. Want the details, or shall I put your name down?", lastIntro: true, delay: 1400 },
+    );
+    return () => { queue.stop(); queueRef.current = null; };
+  }, [playSound]);
 
   const scrollTo = useCallback((id?: string) => {
     const thread = threadRef.current;
@@ -149,18 +174,32 @@ export default function ChatPage() {
     if (openTopics.current.has(topic)) { scrollTo(`topic-${topic}`); return; }
     openTopics.current.add(topic);
     const id = ++sequence.current;
-    setMessages(previous => [...previous, { id: `question-${id}`, side: "guest", text: prompt ?? topicLabels[topic] }, { id: `topic-${topic}`, side: "baron", topic }]);
-    setAnnouncement(`The Baron has replied about ${topic === "venue" ? "the venue" : `the ${topic}`}.`);
-    window.setTimeout(() => scrollTo(`question-${id}`), 80);
+    queueRef.current?.add(
+      { id: `question-${id}`, side: "guest", text: prompt ?? topicLabels[topic], delay: 150 },
+      { id: `topic-${topic}`, side: "baron", topic, delay: 1000 },
+    );
   }, [scrollTo]);
 
   const startRsvp = useCallback(() => {
-    setShowRsvp(true);
-    window.setTimeout(() => {
-      scrollTo("rsvp-panel");
-      if (!receipt) formRef.current?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
-    }, 80);
-  }, [receipt, scrollTo]);
+    if (showRsvp) { scrollTo("rsvp-panel"); return; }
+    if (rsvpQueued.current) return;
+    rsvpQueued.current = true;
+    queueRef.current?.add({ id: "rsvp-open", side: "baron", delay: 400, action: () => {
+      setShowRsvp(true);
+      window.setTimeout(() => {
+        scrollTo("rsvp-panel");
+        if (!receipt) formRef.current?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+      }, 80);
+    } });
+  }, [receipt, scrollTo, showRsvp]);
+
+  useEffect(() => {
+    const latest = messages.at(-1);
+    if (!latest) return;
+    setAnnouncement(latest.text ?? (latest.invitation ? "Your invitation has arrived." : "The Baron has replied."));
+    const timer = window.setTimeout(() => scrollTo(latest.id), 60);
+    return () => window.clearTimeout(timer);
+  }, [messages, scrollTo]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -186,9 +225,10 @@ export default function ChatPage() {
     if (/cast|actor|who|jenny|caleb|jeffrey|writer|star/i.test(value)) { chooseTopic("cast", value); return; }
     if (/play|show|about|story|more|drill|baron|hi\b|hello|hey|sup/i.test(value)) { chooseTopic("play", value); return; }
     const id = ++sequence.current;
-    setMessages(previous => [...previous, { id: `question-${id}`, side: "guest", text: value }, { id: `help-${id}`, side: "baron", topic: "help" }]);
-    setAnnouncement("The Baron has replied. Choose the play, cast, venue, or RSVP.");
-    window.setTimeout(() => scrollTo(`question-${id}`), 80);
+    queueRef.current?.add(
+      { id: `question-${id}`, side: "guest", text: value, delay: 150 },
+      { id: `help-${id}`, side: "baron", topic: "help", delay: 1000 },
+    );
   }
 
   function checkScroll() {
@@ -212,30 +252,21 @@ export default function ChatPage() {
       <div className="chat-thread" ref={threadRef} onScroll={checkScroll} tabIndex={0} aria-label="Conversation. Scroll for messages and play details.">
         <div className="day-label">Today</div>
         <div className="message-stack">
-          <Bubble side="guest">hey daddy</Bubble>
-          <Bubble>Founding Daddy.</Bubble>
-          <Bubble side="guest">hosting?</Bubble>
-          <Bubble>Yes. An entire theatrical production.</Bubble>
-          <Bubble side="guest">so... role play?</Bubble>
-          <Bubble>Definitely.</Bubble>
-          <Bubble id="invitation" className="invitation-bubble"><p className="invite-intro">You’re invited:</p><h2>THE DRILLMASTER</h2><p className="invite-date">October 13 <span>•</span> 7:30 PM</p><p className="invite-venue">The Elysian, Los Angeles</p><button className="invite-more" onClick={() => chooseTopic("play")}>There’s a story here <ArrowUpRight size={17} aria-hidden="true" /></button></Bubble>
-          <Bubble side="guest">i’m coming</Bubble>
-          <Bubble>so are the British</Bubble>
+          {messages.filter(message => message.intro).map(message => <Bubble key={message.id} id={message.id} side={message.side} className={message.invitation ? "invitation-bubble" : ""}>{message.invitation ? <><p className="invite-intro">You’re invited:</p><h2>THE DRILLMASTER</h2><p className="invite-date">October 13 <span>•</span> 7:30 PM</p><p className="invite-venue">The Elysian, Los Angeles</p><a className="invite-poster-link" href="/VIP/assets/elysian-announcement.png" target="_blank" rel="noopener noreferrer" aria-label="Open The Drillmaster announcement poster"><img className="invite-poster" src="/VIP/assets/elysian-announcement.png" alt="The Drillmaster developmental preview at The Elysian, October 13 at 7:30 PM, with the ensemble cast." width="2160" height="2700" /></a><button className="invite-more" onClick={() => chooseTopic("play")}>There’s a story here <ArrowUpRight size={17} aria-hidden="true" /></button></> : message.text}</Bubble>)}
         </div>
-        <div className="read-receipt">An invitation from The Drillmaster</div>
-        <div className="conversation-divider"><span>Your evening, sorted.</span></div>
+        {introComplete && <><div className="read-receipt">An invitation from The Drillmaster</div><div className="conversation-divider"><span>Your evening, sorted.</span></div></>}
         <div className="message-stack replies">
-          <Bubble>Consider this your personal invitation. Want the details, or shall I put your name down?</Bubble>
-          {messages.map(message => <Bubble key={message.id} id={message.id} side={message.side} className={message.topic ? "detail-bubble" : ""}>{message.topic ? <TopicReply topic={message.topic} onRsvp={startRsvp} /> : message.text}</Bubble>)}
-          {showRsvp && <div id="rsvp-panel" ref={formRef}><Bubble className="detail-bubble rsvp-bubble">{receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">RSVP received</span><h2>A date with history.</h2><p>Thank you, {receipt.name}. We’ve received your request for {receipt.guests === 1 ? "one place" : "two places"}.</p><p>The team will confirm availability. We can’t wait to make a scene.</p><div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=VIP%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div> : <RsvpForm onClose={() => setShowRsvp(false)} onSuccess={result => { setReceipt(result); setAnnouncement("Your RSVP request has been saved. The team will confirm availability."); window.setTimeout(() => scrollTo("rsvp-panel"), 80); }} />}</Bubble></div>}
+          {messages.filter(message => !message.intro).map(message => <Bubble key={message.id} id={message.id} side={message.side} className={message.topic ? "detail-bubble" : ""}>{message.topic ? <TopicReply topic={message.topic} onRsvp={startRsvp} /> : message.text}</Bubble>)}
+          {showRsvp && <div id="rsvp-panel" ref={formRef}><Bubble className="detail-bubble rsvp-bubble">{receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">RSVP received</span><h2>A date with history.</h2><p>Thank you, {receipt.name}. We’ve received your request for {receipt.guests === 1 ? "one place" : "two places"}.</p><p>The team will confirm availability. We can’t wait to make a scene.</p><div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=VIP%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div> : <RsvpForm onClose={() => { setShowRsvp(false); rsvpQueued.current = false; }} onSuccess={result => { queueRef.current?.add({ id: "rsvp-received", side: "baron", delay: 300, action: () => { setReceipt(result); setAnnouncement("Your RSVP request has been saved. The team will confirm availability."); window.setTimeout(() => scrollTo("rsvp-panel"), 80); } }); }} />}</Bubble></div>}
         </div>
+        {pending && <div className="typing-indicator" aria-label="A message is on its way"><span /><span /><span /></div>}
         <div className="thread-end"><VenetianMask size={18} aria-hidden="true" /><span>History. But make it a date.</span></div>
       </div>
       <div className="composer-area">
         {unread && <button className="jump-latest" aria-label="Scroll to the latest messages" onClick={() => scrollTo()}><ArrowDown size={20} /></button>}
         <div className="quick-replies" aria-label="Suggested replies"><button onClick={() => chooseTopic("play")}>The play</button><button onClick={() => chooseTopic("cast")}>The cast</button><button onClick={() => chooseTopic("venue")}>Getting there</button><button className="rsvp-shortcut" onClick={startRsvp}>{receipt ? <Check size={15} aria-hidden="true" /> : <Ticket size={15} aria-hidden="true" />}{receipt ? "My RSVP" : "RSVP"}</button></div>
         <form className="composer" onSubmit={sendMessage}><Input aria-label="Message the Baron about the play, cast, venue, or RSVP" placeholder="Say something…" value={draft} onChange={event => setDraft(event.target.value)} maxLength={500} className="composer-input" /><button type="submit" aria-label="Send message" disabled={!draft.trim()} className="send-button"><Send size={21} aria-hidden="true" /></button></form>
-        <p className="composer-hint">Ask about the play, the cast, the venue, or your RSVP.</p>
+        <div className="composer-footer"><p className="composer-hint">Ask about the play, the cast, the venue, or your RSVP.</p><button className="sound-toggle" type="button" onClick={toggleSound} aria-label={sound === "on" ? "Mute message sounds" : "Enable message sounds"}>{sound === "on" ? <Volume2 size={15} /> : <VolumeX size={15} />}{sound === "blocked" ? "Tap for sound" : sound === "on" ? "Sound on" : "Sound off"}</button></div>
       </div>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
     </section>
