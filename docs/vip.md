@@ -22,6 +22,8 @@ The Apps Script source is in `integrations/google-sheets/Code.gs`. Its deploymen
 
 The writer opens only the fixed RSVP sheet, validates fields and ticket limits, escapes spreadsheet formula prefixes, and uses a script lock plus the RSVP UUID to avoid duplicate rows on retries. Its GET endpoint cannot list RSVPs. The sheet itself remains private. Apps Script's web app runs as the owner so guests do not need Google accounts; the application token protects the write endpoint.
 
+The server retries an unverified Google response once using the same UUID. This covers a connection interruption after a successful write without creating a duplicate RSVP.
+
 Requests for more than two tickets link to `thedrillmasterplay@gmail.com`. An RSVP remains a request pending the production team's confirmation.
 
 The original Sites database retains an explicitly labeled QA record with reference `98fff494-9e21-4a7a-91e8-cf954cb14527`. It is not an attendee and should not be imported into the invite list.

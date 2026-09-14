@@ -57,7 +57,10 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
   if (!parsed.success) return json({ error: parsed.error.issues[0]?.message ?? 'Please check your details.' }, 400);
   if (!env.VIP_RSVP_SHEETS_URL && !env.VIP_RSVP_UPSTREAM_TOKEN) return json({ error: unavailable }, 503);
 
-  try {
+  // A transient Google response can fail after the row was written. Retry once
+  // with the same UUID so the writer returns the original receipt without a second row.
+  const attempts = env.VIP_RSVP_SHEETS_URL ? 2 : 1;
+  for (let attempt = 0; attempt < attempts; attempt++) try {
     const response = env.VIP_RSVP_SHEETS_URL
       ? await saveToGoogleSheet(parsed.data, { env, fetchImpl })
       : await fetchImpl(UPSTREAM, {
@@ -72,11 +75,10 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
     });
     const saved = rsvpReceiptSchema.safeParse(await response.json());
     if (!response.ok || !saved.success || saved.data.reference !== parsed.data.id) {
-      return json({ error: unavailable }, 503);
+      continue;
     }
     // Both storage endpoints return the actual stored receipt on an idempotent retry.
     return json(saved.data, 201);
-  } catch {
-    return json({ error: unavailable }, 503);
-  }
+  } catch { /* Retry the same request, then report an unverified save. */ }
+  return json({ error: unavailable }, 503);
 }

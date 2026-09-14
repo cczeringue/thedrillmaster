@@ -38,6 +38,25 @@ test('Sheets failures and unexpected redirects fail closed without falling back 
   assert.equal((await handleVipRsvp(request(), { env: { VIP_RSVP_SHEETS_URL: env.VIP_RSVP_SHEETS_URL }, fetchImpl: () => { throw Error('Unexpected call'); } })).status, 503);
 });
 
+test('a transient Sheets response retries the same UUID only once', async () => {
+  const requests = [];
+  const response = await handleVipRsvp(request(), { env, fetchImpl: async (_url, options) => {
+    requests.push(JSON.parse(options.body));
+    if (requests.length === 1) throw new TypeError('Network response interrupted after save');
+    return Response.json(receipt);
+  } });
+  assert.equal(response.status, 201);
+  assert.equal(requests.length, 2);
+  assert.deepEqual(requests[0], requests[1]);
+  let attempts = 0;
+  const unavailable = await handleVipRsvp(request(), { env, fetchImpl: async () => {
+    attempts++;
+    throw new TypeError('Network unavailable');
+  } });
+  assert.equal(attempts, 2);
+  assert.equal(unavailable.status, 503);
+});
+
 function fixture() {
   const rows = [['Name', 'Email', 'Tickets needed', 'Received at', 'RSVP reference']];
   let writes = 0, locked = false;
