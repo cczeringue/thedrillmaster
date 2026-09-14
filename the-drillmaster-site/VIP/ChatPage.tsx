@@ -57,11 +57,11 @@ function RsvpForm({ onSuccess }: { onSuccess: (receipt: RsvpReceipt) => void }) 
 
   return <form className="rsvp-form" onSubmit={submit} aria-labelledby="rsvp-heading">
     <div className="form-heading"><span className="eyebrow">Your personal invitation</span></div>
-    <h2 id="rsvp-heading">Join the Creators List.</h2>
-    <p className="form-intro">You’re invited. Choose <strong>one or two free tickets</strong> below. We’ll email you to confirm availability.</p>
+    <h2 id="rsvp-heading">Add your name to the Creator's list</h2>
+    <p className="form-intro">(Tickets will be available for you at no charge at the door.)</p>
     <div className="form-event" aria-label="Event details">
       <strong>{EVENT.title}</strong>
-      <span>Developmental staged reading</span>
+      <span>Developmental preview</span>
       <strong>Tuesday, October 13, 2026 · {EVENT.time}</strong>
       <span>Doors {EVENT.doors} · Los Angeles time</span>
       <strong>{EVENT.venue}</strong>
@@ -75,10 +75,10 @@ function RsvpForm({ onSuccess }: { onSuccess: (receipt: RsvpReceipt) => void }) 
       <label htmlFor="guest-count">Tickets needed</label>
       <Select value={guests} onValueChange={setGuests} disabled={busy}><SelectTrigger id="guest-count" className="rsvp-select"><SelectValue /></SelectTrigger><SelectContent className="party-menu"><SelectItem value="1">1 ticket · just me</SelectItem><SelectItem value="2">2 tickets · me + 1</SelectItem></SelectContent></Select>
     </fieldset>
-    <p className="more-tickets">Need more than 2 tickets? <a href={`mailto:${EVENT.email}?subject=The%20Drillmaster%20Creators%20List%20-%20additional%20tickets`}>Email {EVENT.email}</a>.</p>
+    <p className="more-tickets">Need more than 2 tickets? <a href={`mailto:${EVENT.email}?subject=The%20Drillmaster%20Creator%27s%20list%20-%20additional%20tickets`}>Email {EVENT.email}</a>.</p>
     {error && <p className="form-error" role="alert">{error}</p>}
-    <Button className="submit-rsvp" type="submit" disabled={busy}>{busy ? "Sending your request…" : "Join the Creators List"}{!busy && <Send size={17} aria-hidden="true" />}</Button>
-    <p className="privacy-copy">Your details are used to manage this invitation. Tickets are confirmed separately by email.</p>
+    <Button className="submit-rsvp" type="submit" disabled={busy}>{busy ? "Adding your name…" : "Add my name"}{!busy && <Send size={17} aria-hidden="true" />}</Button>
+    <p className="privacy-copy">Your details are used to manage this invitation.</p>
   </form>;
 }
 
@@ -137,13 +137,17 @@ export default function ChatPage() {
 
   return <main className="experience">
     <aside className="desktop-caption" aria-hidden="true"><span>THE DRILLMASTER</span><span>A VERY PERSONAL INVITATION.</span></aside>
-    <section className="chat-shell" aria-label="Your Creators List invitation from Baron von Steuben">
+    <section className="chat-shell" aria-label="Your Creator's list invitation from Baron von Steuben">
       <header className="chat-header">
         <Portrait header />
         <div className="contact"><h1>Baron von Steuben</h1><div className="invitation-status">Personal invitation</div></div>
         <VenetianMask className="mask-mark" size={31} aria-hidden="true" />
       </header>
-      <div className="event-strip"><Ticket size={15} aria-hidden="true" /><span>OCT 13 <span className="strip-dot">·</span> 7:30 PM <span className="strip-dot">·</span> THE ELYSIAN</span></div>
+      <div className="event-strip">
+        <strong className="event-premise">America’s Gayest Founding Daddy</strong>
+        <span className="event-format">A developmental preview</span>
+        <div className="event-logistics"><Ticket size={15} aria-hidden="true" /><span>OCT 13 <span className="strip-dot">·</span> 7:30 PM <span className="strip-dot">·</span> THE ELYSIAN</span></div>
+      </div>
       <div className="chat-thread" ref={threadRef} tabIndex={0}
         onWheel={() => { readingManually.current = true; }}
         onTouchMove={() => { readingManually.current = true; }}
@@ -151,9 +155,9 @@ export default function ChatPage() {
         <div className="day-label">Today</div>
         <div className="message-stack">
           {messages.map(message => <Bubble key={message.id} id={message.id} side={message.side} className={message.invitation ? "invitation-bubble" : message.rsvp ? "detail-bubble rsvp-bubble" : ""}>
-            {message.invitation ? <><p className="invite-intro">You’re invited to the Creators List:</p><h2>THE DRILLMASTER</h2><p className="invite-date">October 13 <span>•</span> 7:30 PM</p><p className="invite-venue">The Elysian, Los Angeles</p><a className="invite-poster-link" href="/VIP/assets/elysian-announcement.png" target="_blank" rel="noopener noreferrer" aria-label="Open The Drillmaster announcement poster"><img className="invite-poster" src="/VIP/assets/elysian-announcement.png" alt="The Drillmaster developmental preview at The Elysian, October 13 at 7:30 PM, with the ensemble cast." width="2160" height="2700" /></a></>
-            : message.rsvp ? receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">RSVP received</span><h2>You’re on the Creators List.</h2><p>Thank you, {receipt.name}. We’ve received your request for {receipt.guests === 1 ? "one free ticket" : "two free tickets"}.</p><p>We’ll email you to confirm availability. We can’t wait to make a scene.</p><div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=Creators%20List%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div>
-            : <RsvpForm onSuccess={result => { queueRef.current?.add({ id: "rsvp-received", side: "baron", delay: 300, action: () => { setReceipt(result); setAnnouncement("Your Creators List request has been saved. We’ll email you to confirm availability."); window.setTimeout(() => scrollTo("rsvp-panel"), 80); } }); }} />
+            {message.invitation ? <><p className="invite-intro">Jenny Zigrino, Caleb Zeringue, and Jeffrey Jay cordially invite you to</p><h2>THE DRILLMASTER</h2><p className="invite-date">October 13 <span>•</span> 7:30 PM</p><p className="invite-venue">The Elysian, Los Angeles</p><a className="invite-poster-link" href="/VIP/assets/elysian-announcement.png" target="_blank" rel="noopener noreferrer" aria-label="Open The Drillmaster announcement poster"><img className="invite-poster" src="/VIP/assets/elysian-announcement.png" alt="The Drillmaster developmental preview at The Elysian, October 13 at 7:30 PM, with the ensemble cast." width="2160" height="2700" /></a></>
+            : message.rsvp ? receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">Name added</span><h2>You’re on the Creator's list.</h2><p>Thank you, {receipt.name}. We’ve added your name for {receipt.guests === 1 ? "one ticket" : "two tickets"}.</p><p>Your tickets will be available for you at no charge at the door. We can’t wait to make a scene.</p><div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=Creator%27s%20list%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div>
+            : <RsvpForm onSuccess={result => { queueRef.current?.add({ id: "rsvp-received", side: "baron", delay: 300, action: () => { setReceipt(result); setAnnouncement("Your name has been added to the Creator's list. Your tickets will be available at no charge at the door."); window.setTimeout(() => scrollTo("rsvp-panel"), 80); } }); }} />
             : message.text}
           </Bubble>)}
         </div>

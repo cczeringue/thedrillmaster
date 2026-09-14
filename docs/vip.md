@@ -10,7 +10,7 @@ The chat was imported from `https://drillmaster-vip-chat.cbiscuit.chatgpt.site`.
 
 The invitation includes the supplied Elysian announcement poster, with an eight-second pause before the next message. Scrolling manually by wheel, touch, or keyboard stops automatic message scrolling for that page load; the remaining messages and form still arrive. The scripted messages use one delivery queue and arrive separately, with the classic Grindr notification audio for each new message when sound is enabled. Browsers that block autoplay show “Tap for sound.” The sound control can also mute playback.
 
-The RSVP form is the final message and appears automatically after the scripted exchange. It invites guests to the Creators List, clearly offers one or two free tickets pending email confirmation, and includes the staged-reading format, date, show and door times, venue, and address. The header says “Personal invitation” without an online status indicator. There is no message composer, suggested reply, chat menu, or interactive topic handler. The form cannot be dismissed; sound remains independently controllable.
+The RSVP form is the final message and appears automatically after the scripted exchange. It invites guests to add their names to the Creator's list for one or two tickets available at no charge at the door, and includes the developmental-preview format, date, show and door times, venue, and address. Jenny Zigrino, Caleb Zeringue, and Jeffrey Jay are named as the inviters. The fixed event bar identifies the story as America’s Gayest Founding Daddy and the event as a developmental preview. The header says “Personal invitation” without an online status indicator. There is no message composer, suggested reply, chat menu, or interactive topic handler. The form cannot be dismissed; sound remains independently controllable.
 
 Conversation state, form state, and the displayed receipt reset on each page load. Saved RSVP records remain on the server. No guest receipt is restored from browser storage.
 
@@ -26,7 +26,7 @@ The writer opens only the fixed RSVP sheet, validates fields and ticket limits, 
 
 The server retries an unverified Google response once using the same UUID. This covers a connection interruption after a successful write without creating a duplicate RSVP.
 
-Requests for more than two tickets link to `thedrillmasterplay@gmail.com`. An RSVP remains a request pending the production team's confirmation.
+Requests for more than two tickets link to `thedrillmasterplay@gmail.com`. Successful signups show that the guest's name is on the list and tickets will be available at no charge at the door.
 
 The original Sites database retains an explicitly labeled QA record with reference `98fff494-9e21-4a7a-91e8-cf954cb14527`. It is not an attendee and should not be imported into the invite list.
 
