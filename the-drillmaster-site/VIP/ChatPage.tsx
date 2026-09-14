@@ -9,7 +9,7 @@ import { useMessageSound } from "./lib/use-message-sound";
 import { rsvpReceiptSchema, rsvpSchema } from "./lib/rsvp-validation";
 
 type Message = { id: string; side: "baron" | "guest"; text?: string; invitation?: boolean; rsvp?: boolean; delay?: number; action?: () => void };
-type RsvpReceipt = { name: string; guests: number; reference: string };
+type RsvpReceipt = { name: string; guests: number; reference: string; emailStatus?: "sent" | "pending" | "failed" };
 
 function Portrait({ header = false }: { header?: boolean }) {
   return <img className={header ? "portrait portrait-header" : "portrait"} src="/VIP/assets/baron.webp" alt={header ? "Portrait of Baron von Steuben" : ""} width={header ? 48 : 32} height={header ? 48 : 32} />;
@@ -78,7 +78,7 @@ function RsvpForm({ onSuccess }: { onSuccess: (receipt: RsvpReceipt) => void }) 
     <p className="more-tickets">Need more than 2 tickets? <a href={`mailto:${EVENT.email}?subject=The%20Drillmaster%20Creator%27s%20list%20-%20additional%20tickets`}>Email {EVENT.email}</a>.</p>
     {error && <p className="form-error" role="alert">{error}</p>}
     <Button className="submit-rsvp" type="submit" disabled={busy}>{busy ? "Adding your name…" : "Add my name"}{!busy && <Send size={17} aria-hidden="true" />}</Button>
-    <p className="privacy-copy">Your details are used to manage this invitation.</p>
+    <p className="privacy-copy">We’ll email your confirmation and use your details to manage this invitation.</p>
   </form>;
 }
 
@@ -156,7 +156,7 @@ export default function ChatPage() {
         <div className="message-stack">
           {messages.map(message => <Bubble key={message.id} id={message.id} side={message.side} className={message.invitation ? "invitation-bubble" : message.rsvp ? "detail-bubble rsvp-bubble" : ""}>
             {message.invitation ? <><p className="invite-intro">Jenny Zigrino, Caleb Zeringue, and Jeffrey Jay cordially invite you to</p><h2>THE DRILLMASTER</h2><p className="invite-date">October 13 <span>•</span> 7:30 PM</p><p className="invite-venue">The Elysian, Los Angeles</p><a className="invite-poster-link" href="/VIP/assets/elysian-announcement.png" target="_blank" rel="noopener noreferrer" aria-label="Open The Drillmaster announcement poster"><img className="invite-poster" src="/VIP/assets/elysian-announcement.png" alt="The Drillmaster developmental preview at The Elysian, October 13 at 7:30 PM, with the ensemble cast." width="2160" height="2700" /></a></>
-            : message.rsvp ? receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">Name added</span><h2>You’re on the Creator's list.</h2><p>Thank you, {receipt.name}. We’ve added your name for {receipt.guests === 1 ? "one ticket" : "two tickets"}.</p><p>Your tickets will be available for you at no charge at the door. We can’t wait to make a scene.</p><div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=Creator%27s%20list%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div>
+            : message.rsvp ? receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">Name added</span><h2>You’re on the Creator's list.</h2><p>Thank you, {receipt.name}. We’ve added your name for {receipt.guests === 1 ? "one ticket" : "two tickets"}.</p><p>Your tickets will be available for you at no charge at the door. We can’t wait to make a scene.</p>{receipt.emailStatus && <p className="confirmation-note">{receipt.emailStatus === "sent" ? "Your confirmation email is on its way, with the poster and calendar link. Check spam if you don’t see it." : "Your name is on the list, but we couldn’t confirm email delivery. Save the details below, or contact the team for a copy."}</p>}<div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=Creator%27s%20list%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div>
             : <RsvpForm onSuccess={result => { queueRef.current?.add({ id: "rsvp-received", side: "baron", delay: 300, action: () => { setReceipt(result); setAnnouncement("Your name has been added to the Creator's list. Your tickets will be available at no charge at the door."); window.setTimeout(() => scrollTo("rsvp-panel"), 80); } }); }} />
             : message.text}
           </Bubble>)}

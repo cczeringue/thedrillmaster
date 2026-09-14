@@ -46,6 +46,7 @@ function doPost(event) {
     if (typeof raw !== 'string' || raw.length > 4096) return json_({ ok: false, error: 'Invalid request.' });
     var input = JSON.parse(raw);
     if (!input || typeof input !== 'object' || !authorized_(input.token)) return json_({ ok: false, error: 'Unauthorized.' });
+    if (input.action) return emailAction_(input);
     var keys = Object.keys(input).sort().join(',');
     if (keys !== 'email,guests,id,name,token') return json_({ ok: false, error: 'Invalid fields.' });
     if (typeof input.name !== 'string' || typeof input.email !== 'string') return json_({ ok: false, error: 'Invalid details.' });
@@ -74,4 +75,45 @@ function doPost(event) {
   } finally {
     if (lock && lock.hasLock()) lock.releaseLock();
   }
+}
+
+// Email metadata is kept in Script Properties, leaving the guest sheet unchanged.
+// A claim is held while Vercel sends, and Brevo deduplicates by the RSVP UUID.
+function emailAction_(input) {
+  var lock = LockService.getScriptLock();
+  var uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
+  if (!uuid.test(input.id || '') || !uuid.test(input.claimId || '')) return json_({ ok: false });
+  if (input.action !== 'claim-email' && input.action !== 'finish-email') return json_({ ok: false });
+  try {
+    lock.waitLock(10000);
+    var sheet = sheet_();
+    var last = sheet.getLastRow();
+    var cell = last > 1 ? sheet.getRange(2, 5, last - 1, 1).createTextFinder(input.id).matchEntireCell(true).findNext() : null;
+    if (!cell) return json_({ ok: false });
+    var properties = PropertiesService.getScriptProperties();
+    var key = 'confirmation:' + input.id;
+    var state = JSON.parse(properties.getProperty(key) || '{}');
+    var now = Date.now();
+    if (state.status === 'sent') return json_({ ok: true, status: 'sent' });
+    if (input.action === 'finish-email') {
+      if (state.claimId !== input.claimId || ['sent', 'failed', 'uncertain'].indexOf(input.status) < 0 ||
+          typeof input.messageId !== 'string' || input.messageId.length > 300) return json_({ ok: false });
+      state.status = input.status;
+      state.messageId = input.messageId;
+      state.updatedAt = now;
+      properties.setProperty(key, JSON.stringify(state));
+      return json_({ ok: true, status: state.status });
+    }
+    // Never guess whether an old uncertain request was delivered after provider deduplication expires.
+    if ((state.status === 'sending' || state.status === 'uncertain') && now - state.firstAttemptAt > 25 * 60000) {
+      return json_({ ok: true, status: 'needs_review' });
+    }
+    if (state.status === 'sending' && state.claimId !== input.claimId && now - state.updatedAt < 120000) {
+      return json_({ ok: true, status: 'pending' });
+    }
+    var row = sheet.getRange(cell.getRow(), 1, 1, 5).getDisplayValues()[0];
+    properties.setProperty(key, JSON.stringify({ status: 'sending', claimId: input.claimId,
+      firstAttemptAt: state.status === 'failed' ? now : (state.firstAttemptAt || now), updatedAt: now }));
+    return json_({ ok: true, status: 'claimed', reference: input.id, name: row[0], email: row[1], guests: Number(row[2]) });
+  } finally { if (lock.hasLock()) lock.releaseLock(); }
 }

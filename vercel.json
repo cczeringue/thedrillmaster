@@ -80,5 +80,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/vip-rsvp.js": {
+      "maxDuration": 120
+    }
+  }
 }

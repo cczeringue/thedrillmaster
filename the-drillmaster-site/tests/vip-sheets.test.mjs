@@ -74,7 +74,9 @@ function fixture() {
       };
     },
   };
+  const properties = new Map();
   const context = vm.createContext({
+    PropertiesService: { getScriptProperties: () => ({ getProperty: key => properties.get(key) ?? null, setProperty: (key, value) => properties.set(key, value) }) },
     console: { log() {}, error() {} },
     ContentService: { MimeType: { JSON: 'json' }, createTextOutput: text => ({ setMimeType: () => JSON.parse(text) }) },
     Utilities: { DigestAlgorithm: { SHA_256: 'sha256' }, Charset: { UTF_8: 'utf8' }, computeDigest: (_algorithm, text) => [...createHash('sha256').update(text).digest()] },
@@ -106,4 +108,24 @@ test('the sheet writer rejects unauthorized/oversized parties and escapes formul
   assert.equal(f.post({ ...input, name: '=IMPORTXML("https://bad.invalid", "//a")', token: 'test-token' }).ok, true);
   assert.match(f.rows[1][0], /^'=/);
   assert.equal(f.context.doGet().ok, false);
+});
+
+const claimId = 'f4e75baa-41cc-426b-95f3-088f7c2b3827';
+test('email claims use stored recipient details and persist delivery without changing RSVP rows', () => {
+ const f=fixture(); f.post({...input,token:'test-token'});
+ const claim=f.post({action:'claim-email',id:input.id,claimId,token:'test-token'});
+ assert.equal(claim.status,'claimed'); assert.equal(claim.email,input.email);
+ assert.equal(f.post({action:'claim-email',id:input.id,claimId:'7405f244-ed97-4b94-88b7-b057db195c20',token:'test-token'}).status,'pending');
+ assert.equal(f.post({action:'claim-email',id:input.id,claimId,token:'test-token'}).status,'claimed');
+ assert.equal(f.post({action:'finish-email',id:input.id,claimId,status:'sent',messageId:'<mail@example.invalid>',token:'test-token'}).status,'sent');
+ assert.equal(f.post({action:'claim-email',id:input.id,claimId,token:'test-token'}).status,'sent');
+ assert.equal(f.writes(),1); assert.equal(f.rows[1].length,5);
+});
+
+test('unauthorized, unknown or mismatched email claims never expose guest data or mark mail sent', () => {
+ const f=fixture(); f.post({...input,token:'test-token'});
+ assert.equal(f.post({action:'claim-email',id:input.id,claimId,token:'bad'}).ok,false);
+ assert.equal(f.post({action:'claim-email',id:claimId,claimId,token:'test-token'}).ok,false);
+ f.post({action:'claim-email',id:input.id,claimId,token:'test-token'});
+ assert.equal(f.post({action:'finish-email',id:input.id,claimId:input.id,status:'sent',messageId:'fake',token:'test-token'}).ok,false);
 });

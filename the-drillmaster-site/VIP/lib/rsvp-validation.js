@@ -10,6 +10,7 @@ export const rsvpSchema = z.object({
 export const rsvpReceiptSchema = z.object({
   ok: z.literal(true),
   reference: z.string().uuid(),
+  emailStatus: z.enum(["sent", "pending", "failed"]).optional(),
   name: z.string().min(1).max(100),
   guests: z.number().int().min(1).max(2),
 });

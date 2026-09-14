@@ -1,5 +1,6 @@
 import { rsvpSchema, rsvpReceiptSchema } from '../VIP/lib/rsvp-validation.js';
 import { saveToGoogleSheet } from './sheets-rsvp.js';
+import { sendVipConfirmation } from './vip-confirmation.js';
 
 const UPSTREAM = 'https://drillmaster-vip-chat.cbiscuit.chatgpt.site/api/rsvp';
 const MAX_BYTES = 4096;
@@ -78,7 +79,9 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
       continue;
     }
     // Both storage endpoints return the actual stored receipt on an idempotent retry.
-    return json(saved.data, 201);
+    const emailStatus = env.BREVO_API_KEY
+      ? await sendVipConfirmation(saved.data.reference, { env, fetchImpl }) : undefined;
+    return json({ ...saved.data, ...(emailStatus ? { emailStatus } : {}) }, 201);
   } catch { /* Retry the same request, then report an unverified save. */ }
   return json({ error: unavailable }, 503);
 }

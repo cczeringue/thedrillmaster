@@ -35,3 +35,13 @@ The original Sites database retains an explicitly labeled QA record with referen
 Use the existing Vercel project and GitHub deployment flow. Both root and nested Vercel configurations include the `/VIP` rewrite and search exclusion headers, matching the repository's existing two-root setup.
 
 From `the-drillmaster-site`, run `npm ci`, `npm run build`, `npm run typecheck:vip`, and `npm run test:vip`. For local RSVP testing, provide the server-only connection variables in an ignored `.env.local` or the process environment, then run `npm run dev`. Do not add VIP to navigation, structured data, or a sitemap.
+
+## Confirmation email
+
+After a verified Sheet save, Vercel sends a personal confirmation through the existing active Brevo sender, `thedrillmasterplay@gmail.com`. It includes the saved name and one/two-ticket count, free ticket pickup at the door, event/door times and address, the supplied poster, website and Elysian event links, a Google Calendar button, and an attached/downloadable Apple/Outlook `.ics` file. Both HTML and plain-text bodies are supplied. The Elysian link is labeled as the public show listing, so its paid tickets do not confuse Creator's list guests. Replies reach the production team. This does not subscribe attendees to marketing or schedule reminder campaigns.
+
+`server/vip-confirmation.js` owns the template and delivery. It uses the existing server-only `BREVO_API_KEY`. The authenticated Apps Script `claim-email` action reads recipient details from the saved row and stores a delivery claim in Script Properties, leaving the five guest-list columns unchanged. `finish-email` records provider acceptance or failure. Each email uses the RSVP UUID as Brevo's idempotency key, with one bounded retry. Sent receipts never resend. Concurrent claims wait; old uncertain sends outside the provider's deduplication window require review rather than risking duplicate mail.
+
+Email failure does not undo a confirmed RSVP. The website reports whether the provider accepted the email and offers the saved event details and team contact if delivery is unconfirmed. Provider acceptance is not a guarantee of inbox placement. No email status, recipient address, or provider secret is exposed beyond the minimal receipt/status returned to that guest. API requests cannot directly invoke the private email actions.
+
+To diagnose delivery, search Brevo transactional logs by the RSVP reference tag. The Apps Script property `confirmation:<reference>` stores the delivery state and provider message ID. `sent` means provider accepted, `failed` means rejected, and `uncertain` means the response could not be confirmed. The Google Sheet remains the authority for door tickets.
