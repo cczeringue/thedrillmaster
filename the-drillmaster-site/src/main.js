@@ -46,6 +46,14 @@ const bioContents = {
   jenny: document.getElementById('bio-content-jenny'),
   caleb: document.getElementById('bio-content-caleb'),
   jeffrey: document.getElementById('bio-content-jeffrey'),
+  dylan: document.getElementById('bio-content-dylan'),
+  guy: document.getElementById('bio-content-guy'),
+  jeremy: document.getElementById('bio-content-jeremy'),
+  chad: document.getElementById('bio-content-chad'),
+  emon: document.getElementById('bio-content-emon'),
+  leslie: document.getElementById('bio-content-leslie'),
+  mary: document.getElementById('bio-content-mary'),
+  beth: document.getElementById('bio-content-beth'),
 };
 
 let lastFocusedBeforeModal = null;

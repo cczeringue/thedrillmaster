@@ -1138,6 +1138,115 @@ a.hero__credit-name {
    CREATIVE TEAM
    ============================================================ */
 
+/* Cast portraits keep the featured creators' existing playbill treatment. */
+.staged-cast__member .cast-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(166, 139, 91, 0.3);
+}
+
+.cast-profile span {
+  display: block;
+  flex: none;
+  min-width: 0;
+  border: 0;
+  transform: none;
+}
+
+.cast-profile .cast-profile__portrait {
+  width: 88px;
+  height: 108px;
+  overflow: hidden;
+  border: 1px solid var(--brass);
+  background: var(--ink);
+  flex-shrink: 0;
+}
+
+.cast-profile__portrait img,
+.bio-modal__body--cast .bio-modal__portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--portrait-position, center);
+  transform: scale(var(--portrait-scale, 1));
+  transform-origin: var(--portrait-origin, center);
+}
+
+.portrait--dylan { --portrait-scale: 1.9; --portrait-origin: center 35%; }
+.portrait--jeremy { --portrait-scale: 1.65; --portrait-origin: center 10%; }
+.portrait--leslie { --portrait-position: 100% center; --portrait-scale: 1.4; --portrait-origin: 60% 25%; }
+.portrait--mary { --portrait-position: center 30%; --portrait-scale: 2; --portrait-origin: center 25%; }
+.portrait--beth { --portrait-position: center 25%; --portrait-scale: 1.55; --portrait-origin: center 10%; }
+
+.cast-profile .cast-profile__copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.cast-profile strong {
+  font-size: clamp(1.08rem, 2.2vw, 1.3rem);
+  white-space: normal;
+}
+
+.staged-cast__member .cast-profile em {
+  text-align: left;
+  font-size: 1rem;
+}
+
+.cast-profile .cast-profile__cta {
+  margin-top: 0.25rem;
+  color: var(--coral-dark);
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.cast-profile__cta span { display: inline; }
+
+.bio-modal__body--cast .bio-modal__portrait-wrap {
+  width: 160px;
+  height: 196px;
+  border-radius: 2px;
+}
+
+.producer-credit {
+  width: min(320px, 100%);
+  margin: 3.5rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--brass);
+  text-align: center;
+}
+
+.producer-credit__role {
+  margin-bottom: 0.5rem;
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.producer-credit__name {
+  margin: 0;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+
+@media (max-width: 420px) {
+  .staged-cast__member .cast-profile { gap: 0.85rem; }
+  .cast-profile .cast-profile__portrait { width: 72px; height: 88px; }
+  .ig-section__cta .btn { max-width: 100%; padding-inline: 1rem; }
+}
+
 .team__grid {
   display: flex;
   justify-content: center;
