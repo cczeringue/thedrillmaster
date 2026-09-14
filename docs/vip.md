@@ -1,6 +1,6 @@
 # VIP invitation
 
-The invitation lives at `/VIP`. It is a separate Vite page and does not add a link to the public navigation. Both the HTML metadata and Vercel response headers specify `noindex, nofollow, noarchive`. This is an unlisted invitation, not password protection.
+The invitation lives at `/VIP`. Lowercase `/vip` also works, with or without a trailing slash. It is a separate Vite page and does not add a link to the public navigation. Both the HTML metadata and Vercel response headers specify `noindex, nofollow, noarchive`. This is an unlisted invitation, not password protection.
 
 ## Source and design
 

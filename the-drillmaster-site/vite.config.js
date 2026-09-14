@@ -13,9 +13,11 @@ function localVip() {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const path = (req.url || '').split('?')[0];
-        if (/^\/VIP(?:\/|$)/.test(path)) {
+        if (/^\/VIP(?:\/|$)/.test(path) || path === '/vip' || path === '/vip/') {
           res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
-          if (path === '/VIP') req.url = req.url.replace('/VIP', '/VIP/index.html');
+          if (path === '/VIP' || path === '/vip' || path === '/vip/') {
+            req.url = req.url.replace(path, '/VIP/index.html');
+          }
         }
         if (path !== '/api/vip-rsvp') return next();
         try {

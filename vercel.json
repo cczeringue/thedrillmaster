@@ -11,6 +11,14 @@
     {
       "source": "/VIP/",
       "destination": "/VIP/index.html"
+    },
+    {
+      "source": "/vip",
+      "destination": "/VIP/index.html"
+    },
+    {
+      "source": "/vip/",
+      "destination": "/VIP/index.html"
     }
   ],
   "headers": [
@@ -51,6 +59,24 @@
         {
           "key": "Cache-Control",
           "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/vip",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/vip/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
         }
       ]
     }
