@@ -2,6 +2,12 @@
 
 The invitation lives at `/VIP`. Lowercase `/vip` also works, with or without a trailing slash. It is a separate Vite page and does not add a link to the public navigation. Both the HTML metadata and Vercel response headers specify `noindex, nofollow, noarchive`. This is an unlisted invitation, not password protection.
 
+## Shared link preview
+
+`VIP/index.html` includes static Open Graph and large-image Twitter card metadata so preview clients can read the title, event details, and image without running JavaScript. All route variants use `https://www.thedrillmaster.gay/vip` as the canonical URL. Search-exclusion metadata and headers remain in place.
+
+The 1200 x 630 JPEG at `public/VIP/assets/vip-invitation-preview-20261013-v1.jpg` pairs the complete, uncropped announcement poster with larger event details in the public website's branding. A square Baron icon supplies the Apple touch icon fallback. Regenerate both assets with `node scripts/render-vip-preview.mjs` from the site directory; this uses the original poster and wordmark, Playwright with installed Chrome, and Sharp. Use a new preview image filename when changing its content after publication. Individual messaging apps control their final crop, caption, and cache behavior.
+
 ## Source and design
 
 The chat was imported from `https://drillmaster-vip-chat.cbiscuit.chatgpt.site`. The original chat components, square blue/gold bubbles, Baron portrait, local Roboto 400/700 fonts, event details, accessibility behavior, and calendar download are preserved. Frontend code is in `the-drillmaster-site/VIP`; static assets are in `the-drillmaster-site/public/VIP/assets`.
