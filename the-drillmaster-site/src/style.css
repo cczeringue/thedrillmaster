@@ -840,6 +840,16 @@ a.hero__credit-name {
   font-weight: 500;
 }
 
+.about__text .about__closing {
+  margin-top: 1.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--teal);
+  color: var(--teal);
+  font-style: italic;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
 .about__soldier {
   display: block;
   width: 90px;
@@ -1351,6 +1361,53 @@ a.hero__credit-name {
 /* ============================================================
    NEWSLETTER
    ============================================================ */
+
+/* Press feature */
+.press {
+  padding: 3rem 1.5rem;
+  background: var(--ink);
+  border-block: 1px solid var(--ink-light);
+}
+
+.press__inner {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.press__heading {
+  margin-bottom: 0.85rem;
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.press__copy {
+  color: var(--cream);
+  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.press__link {
+  display: inline-block;
+  min-height: 44px;
+  margin-top: 0.6rem;
+  padding-block: 0.65rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-wrap: balance;
+}
+
+.press__link:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 4px;
+}
 
 .newsletter {
   position: relative;
