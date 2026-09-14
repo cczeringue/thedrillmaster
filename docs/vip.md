@@ -8,7 +8,9 @@ The chat was imported from `https://drillmaster-vip-chat.cbiscuit.chatgpt.site`.
 
 ## Message playback
 
-The invitation includes the supplied Elysian announcement poster. Introductory and interactive messages use one delivery queue and arrive separately, with the classic Grindr notification audio for each new message when sound is enabled. Browsers that block autoplay show “Tap for sound.” The sound control can also mute playback.
+The invitation includes the supplied Elysian announcement poster. The scripted messages use one delivery queue and arrive separately, with the classic Grindr notification audio for each new message when sound is enabled. Browsers that block autoplay show “Tap for sound.” The sound control can also mute playback.
+
+The RSVP form is the final message and appears automatically after the scripted exchange. There is no message composer, suggested reply, chat menu, or interactive topic handler. The form cannot be dismissed; sound remains independently controllable.
 
 Conversation state, form state, and the displayed receipt reset on each page load. Saved RSVP records remain on the server. No guest receipt is restored from browser storage.
 
