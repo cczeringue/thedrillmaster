@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Drillmaster//VIP Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:drillmaster-20261013-elysian@thedrillmaster.gay
+DTSTAMP:20260912T120000Z
+DTSTART:20261014T023000Z
+DTEND:20261014T034500Z
+SUMMARY:The Drillmaster at The Elysian
+LOCATION:The Elysian\, 1944 Riverside Drive\, Los Angeles\, CA 90039
+DESCRIPTION:Doors open at 7:00 PM Pacific. Show at 7:30 PM. Your VIP RSVP is a
+ request and the production team will confirm availability.
+URL:https://www.elysiantheater.com/shows/thedrillmaster1013
+END:VEVENT
+END:VCALENDAR

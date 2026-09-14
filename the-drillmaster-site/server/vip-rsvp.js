@@ -1,0 +1,79 @@
+import { rsvpSchema, rsvpReceiptSchema } from '../VIP/lib/rsvp-validation.js';
+
+const UPSTREAM = 'https://drillmaster-vip-chat.cbiscuit.chatgpt.site/api/rsvp';
+const MAX_BYTES = 4096;
+const unavailable = 'Your RSVP has not been verified. Please try again in a moment.';
+
+function json(body, status, headers = {}) {
+  return Response.json(body, {
+    status,
+    headers: {
+      'Cache-Control': 'no-store',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      ...headers,
+    },
+  });
+}
+
+// Keep the original durable RSVP database. Its access token is server-only.
+// The endpoint can submit a request, never read the guest list or proxy other URLs.
+export async function handleVipRsvp(request, { env = process.env, fetchImpl = fetch } = {}) {
+  if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405, { Allow: 'POST' });
+  const origin = request.headers.get('origin');
+  if (request.headers.get('sec-fetch-site') === 'cross-site' ||
+      (origin && origin !== new URL(request.url).origin)) {
+    return json({ error: 'Please send your RSVP from this website.' }, 403);
+  }
+  if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
+    return json({ error: 'Please send your RSVP as JSON.' }, 415);
+  }
+  if (Number(request.headers.get('content-length')) > MAX_BYTES) {
+    return json({ error: 'Your RSVP is too large.' }, 413);
+  }
+
+  let input;
+  try {
+    const reader = request.body?.getReader();
+    const chunks = [];
+    let size = 0;
+    if (reader) {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        size += value.byteLength;
+        if (size > MAX_BYTES) {
+          await reader.cancel();
+          return json({ error: 'Your RSVP is too large.' }, 413);
+        }
+        chunks.push(value);
+      }
+    }
+    input = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  } catch {
+    return json({ error: 'Please check your RSVP details.' }, 400);
+  }
+  const parsed = rsvpSchema.safeParse(input);
+  if (!parsed.success) return json({ error: parsed.error.issues[0]?.message ?? 'Please check your details.' }, 400);
+  if (!env.VIP_RSVP_UPSTREAM_TOKEN) return json({ error: unavailable }, 503);
+
+  try {
+    const response = await fetchImpl(UPSTREAM, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'OAI-Sites-Authorization': `Bearer ${env.VIP_RSVP_UPSTREAM_TOKEN}`,
+      },
+      body: JSON.stringify(parsed.data),
+      redirect: 'error',
+      signal: AbortSignal.timeout(15000),
+    });
+    const saved = rsvpReceiptSchema.safeParse(await response.json());
+    if (!response.ok || !saved.success || saved.data.reference !== parsed.data.id) {
+      return json({ error: unavailable }, 503);
+    }
+    // The original endpoint returns the stored receipt on an idempotent retry.
+    return json(saved.data, 201);
+  } catch {
+    return json({ error: unavailable }, 503);
+  }
+}

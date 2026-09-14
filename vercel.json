@@ -2,5 +2,48 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "cd the-drillmaster-site && npm ci",
   "buildCommand": "cd the-drillmaster-site && npm run build",
-  "outputDirectory": "the-drillmaster-site/dist"
+  "outputDirectory": "the-drillmaster-site/dist",
+  "rewrites": [
+    {
+      "source": "/VIP",
+      "destination": "/VIP/index.html"
+    },
+    {
+      "source": "/VIP/",
+      "destination": "/VIP/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/VIP",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/VIP/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/api/vip-rsvp",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ]
 }

@@ -1,9 +1,44 @@
 import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Readable } from 'node:stream';
 import { subscribeEmail } from './api/subscribe.js';
+import { handleVipRsvp } from './server/vip-rsvp.js';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+function localVip() {
+  return {
+    name: 'local-vip',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        const path = (req.url || '').split('?')[0];
+        if (/^\/VIP(?:\/|$)/.test(path)) {
+          res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+          if (path === '/VIP') req.url = req.url.replace('/VIP', '/VIP/index.html');
+        }
+        if (path !== '/api/vip-rsvp') return next();
+        try {
+          const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : Readable.toWeb(req);
+          const request = new Request(`http://${req.headers.host}${req.url}`, {
+            method: req.method, headers: req.headers, body, duplex: 'half',
+          });
+          const response = await handleVipRsvp(request, {
+            env: { ...process.env, ...loadEnv(server.config.mode, __dirname, '') },
+          });
+          res.statusCode = response.status;
+          response.headers.forEach((value, key) => res.setHeader(key, value));
+          res.end(await response.text());
+        } catch {
+          res.statusCode = 503;
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Cache-Control', 'no-store');
+          res.end(JSON.stringify({ error: 'Your RSVP has not been verified. Please try again.' }));
+        }
+      });
+    },
+  };
+}
 
 function localSubscribeApi() {
   return {
@@ -48,13 +83,14 @@ function localSubscribeApi() {
 export default defineConfig({
   root: '.',
   publicDir: 'public',
-  plugins: [localSubscribeApi()],
+  plugins: [localSubscribeApi(), localVip()],
   build: {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
         caleb: resolve(__dirname, 'caleb-zeringue.html'),
         jenny: resolve(__dirname, 'jenny-zigrino.html'),
+        vip: resolve(__dirname, 'VIP/index.html'),
       },
     },
   },
