@@ -1148,7 +1148,7 @@ a.hero__credit-name {
    CREATIVE TEAM
    ============================================================ */
 
-/* Cast portraits keep the featured creators' existing playbill treatment. */
+/* Shared portrait treatment for the full cast. */
 .staged-cast__member .cast-profile {
   display: flex;
   flex-direction: row;
@@ -1198,6 +1198,9 @@ a.hero__credit-name {
   transform-origin: var(--portrait-origin, center);
 }
 
+.portrait--jenny,
+.portrait--caleb,
+.portrait--jeffrey { --portrait-position: center 30%; }
 .portrait--dylan { --portrait-scale: 1.9; --portrait-origin: center 35%; }
 .portrait--jeremy { --portrait-position: center top; --portrait-scale: 1.5; --portrait-origin: center top; }
 .portrait--chad { --portrait-position: center 30%; }
