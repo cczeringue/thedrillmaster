@@ -144,7 +144,7 @@ export default function ChatPage() {
         <VenetianMask className="mask-mark" size={31} aria-hidden="true" />
       </header>
       <div className="event-strip">
-        <strong className="event-premise">America’s Gayest Founding Daddy</strong>
+        <strong className="event-premise">The Drillmaster- America's GAYEST founding Daddy</strong>
         <span className="event-format">A developmental preview</span>
         <div className="event-logistics"><Ticket size={15} aria-hidden="true" /><span>OCT 13 <span className="strip-dot">·</span> 7:30 PM <span className="strip-dot">·</span> THE ELYSIAN</span></div>
       </div>
