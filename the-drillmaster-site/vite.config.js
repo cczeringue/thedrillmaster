@@ -93,6 +93,7 @@ export default defineConfig({
         caleb: resolve(__dirname, 'caleb-zeringue.html'),
         jenny: resolve(__dirname, 'jenny-zigrino.html'),
         vip: resolve(__dirname, 'VIP/index.html'),
+        elysian: resolve(__dirname, 'shows/the-elysian-october-13-2026/index.html'),
       },
     },
   },

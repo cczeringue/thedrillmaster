@@ -85,5 +85,12 @@
     "api/vip-rsvp.js": {
       "maxDuration": 120
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
 }
