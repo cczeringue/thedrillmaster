@@ -34,3 +34,9 @@ The VIP page intentionally remains crawlable so Google can see its existing noin
 The production build passes. Parsed built HTML/JSON-LD verifies one H1 per page, canonical uniqueness, required event facts, fee-inclusive price matching visible copy, all eleven performer names, ticket URL, four sitemap entries, and VIP exclusion. Mobile and desktop previews load the poster, show ticket information, and expand the practical questions without page errors.
 
 After October 13 or any venue change, update the event date/status, availability, price, visible copy and sitemap lastmod together. Keep this dated URL as a truthful event archive if future performances use a new event URL. No automatic monitoring or paid campaign was created.
+
+## Canonical-domain issue found in Search Console
+
+Google's homepage inspection reported that the .gay homepage was not indexed because it was a duplicate without a user-selected canonical; Google had selected `https://thedrillmasterplay.info/`. Its last crawl was September 14, 2026 at 6:41 a.m., before this update. Both .info hostnames were confirmed aliases of this same Vercel project and served the identical homepage. Added permanent host-specific redirects from `thedrillmasterplay.info` and `www.thedrillmasterplay.info` to the corresponding path on `www.thedrillmaster.gay`, alongside the new canonical tags. Existing .gay routing and VIP noindex rules are preserved.
+
+Search Console verified ownership and processed the sitemap successfully, discovering four pages. Google's Rich Results Test found one valid TheaterEvent. Its only non-critical warning is the optional original sale-start date (`validFrom`), which is intentionally not invented.
