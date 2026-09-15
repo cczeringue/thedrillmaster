@@ -3203,14 +3203,21 @@ a.hero__credit-name {
   outline-offset: 4px;
 }
 
+/* The artwork sizes its own grid row, keeping the full pose below the fixed nav. */
 @media (min-width: 900px) {
   .hero {
-    display: block;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    padding-top: calc(7rem + env(safe-area-inset-top, 0px));
   }
 
   .hero__content {
-    max-width: 52%;
-    padding: 8rem clamp(2rem, 4vw, 4rem) 3rem;
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    max-width: 40rem;
+    padding: 2rem clamp(2rem, 4vw, 4rem) 3rem;
     align-items: flex-start;
     text-align: left;
   }
@@ -3235,32 +3242,25 @@ a.hero__credit-name {
   }
 
   .hero__figure {
-    position: absolute;
-    width: 48%;
-    right: 0;
-    bottom: 0;
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    width: 100%;
+    height: auto;
+    right: auto;
+    bottom: auto;
     margin: 0;
     overflow: visible;
   }
 
   .hero__figure img {
-    width: 125%;
+    position: static;
+    width: 100%;
+    max-width: 42rem;
     height: auto;
-    margin: 0 0 -4% -2%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .hero__figure {
-    height: calc(100% - 110px);
-  }
-
-  .hero__figure img {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: 100%;
     margin: 0;
   }
 }
@@ -3268,7 +3268,7 @@ a.hero__credit-name {
 @media (max-width: 899px) {
   .hero__content {
     max-width: 100%;
-    padding: 6.5rem 1.35rem 1.25rem;
+    padding: calc(7.5rem + env(safe-area-inset-top, 0px)) 1.35rem 1.5rem;
   }
 
   .hero__title-wrap,
@@ -3296,12 +3296,15 @@ a.hero__credit-name {
   }
 
   .hero__figure {
-    height: 240px;
+    /* Keep the hat, face and hand together; only the trailing cape bleeds out. */
+    aspect-ratio: 8 / 5;
+    height: auto;
     margin-top: 0;
   }
 
   .hero__figure img {
     width: 100%;
+    max-width: none;
     height: auto;
     margin: 0;
   }
