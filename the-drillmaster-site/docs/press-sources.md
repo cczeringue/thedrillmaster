@@ -1,5 +1,11 @@
 # Homepage press sources
 
+## Synopsis and early review quote
+
+The synopsis links to [Hamilton's April 1779 letter to John Laurens](https://founders.archives.gov/documents/Hamilton/01-02-02-0100) in the National Archives' Founders Online collection. The correspondence and its affectionate language are documented. The copy explicitly treats a romantic reading as an interpretation, retaining the user's historian joke. It does not describe a confirmed sexual relationship.
+
+The early press highlight quotes the exact phrase "genuinely funny" from the Freaks of HHN review linked below. The ticket block describes the October 13 return as a one-night developmental preview, using the user's revised-script copy.
+
 Verified September 14, 2026. The homepage separates reviews and features from guest conversations. Links go to individual articles or episodes. Publication dates describe the coverage, not upcoming performances.
 
 ## Reviews and features
