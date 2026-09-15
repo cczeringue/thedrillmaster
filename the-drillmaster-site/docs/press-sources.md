@@ -19,3 +19,21 @@ Verified September 14, 2026. The homepage separates reviews and features from gu
 ## Editorial scope
 
 Other general comedy appearances and Luigi-focused interviews were not added without a clear Drillmaster connection. The Caleb/Jonny Stein "Heated Rivalry" YouTube clip is a separate live act, not a Drillmaster interview. No third-party players load on the homepage; guests choose an external Listen or Watch link.
+
+## Preview images and page placement
+
+Added September 14, 2026. Seven previews use the source page's Open Graph image, downloaded unchanged into `public/press/`. They load lazily and link to their article or episode. Square artwork is contained in the frame so its title is not cropped.
+
+Bay Area Reporter blocked automated image access. That preview reuses Jenny and Caleb's existing site illustrations in a paired portrait layout. It is not represented as the publisher's photograph. The old May 3 poster from Caleb's personal-site archive was not reused, to avoid confusing the October 13 date.
+
+A compact Featured in strip follows the synopsis and precedes the ticket/cast section. The complete archive remains below the cast and creative team, so long interviews do not delay the ticket information.
+
+| Local preview | Publisher image URL |
+| --- | --- |
+| `freaks-of-hhn.png` | [Source](https://freaksofhhn.com/wp/wp-content/uploads/2026/05/Drill-Master.png) |
+| `boston-globe.jpg` | [Source](https://bostonglobe-prod.cdn.arcpublishing.com/resizer/v2/WMFD677TMNHD5KQTLWHPNF73OM.jpg?auth=39a01c84eb8a81a6b303d27a3f571027fde81b7541a996aecc21c07c68bd9c91&width=1440) |
+| `dork-forest.jpg` | [Source](https://i.ytimg.com/vi/HfM_7Ou0ERE/maxresdefault.jpg) |
+| `rick-tittle.jpg` | [Source](https://omny.fm/shows/the-rick-tittle-podcast/jenny-zigrino-and-caleb-zeringue/image.jpg?t=1746140954&in_playlist=d60e67d2-c01f-4157-a213-ae3c00090b62&size=wideShare) |
+| `tim-drake.jpg` | [Source](https://d2bwo9zemjwxh5.cloudfront.net/image-logo/590721/149469_10152721700295475_1588677572_n_1200x628.jpg?s=ccf61fd5bc0276bc6dfed6753db8dcb0&e=jpg) |
+| `fake-the-nation.jpg` | [Source](https://i.iheart.com/v3/url/aHR0cHM6Ly9jb250ZW50LnByb2R1Y3Rpb24uY2RuLmFydDE5LmNvbS9pbWFnZXMvYWQvMTIvZjIvZTYvYWQxMmYyZTYtZTBjMC00ZDJkLTk3MDctZGNjNDliMTFjMGQ5LzQwNWFmYjIzMDgzNDFmYmI5ZWZiYjJmMjZjYWM2ZDMxZjQzYjc4OTg4Y2U3MmNkNmM2NjZkZTAyZjg2YWE2ODE3MDc2ZmEyMzE3YmRkZjI5ZWEzYzMyMDQ1YzBjZDU1NDlkZDJjYWE1OThhYjFhMGVmN2ExOTNkZThhZDhhZTU4LmpwZWc?ops=ratio%281%2C1%29%2Cfit%28250%2C0%29&cacheable=true) |
+| `out-loud-and-laughing.jpg` | [Source](https://i.ytimg.com/vi/G54n1mTpgFc/maxresdefault.jpg) |
