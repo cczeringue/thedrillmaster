@@ -32,7 +32,7 @@ Added September 14, 2026. Seven previews use the source page's Open Graph image,
 
 Bay Area Reporter blocked automated image access. That preview reuses Jenny and Caleb's existing site illustrations in a paired portrait layout. It is not represented as the publisher's photograph. The old May 3 poster from Caleb's personal-site archive was not reused, to avoid confusing the October 13 date.
 
-A compact Featured in strip follows the synopsis and precedes the ticket/cast section. The complete archive remains below the cast and creative team, so long interviews do not delay the ticket information.
+A compact Featured in strip follows the hero and precedes the synopsis. The hero now includes the event essentials and featured cast names. The complete archive remains below the cast and creative team, so long interviews do not delay the ticket information.
 
 | Local preview | Publisher image URL |
 | --- | --- |
