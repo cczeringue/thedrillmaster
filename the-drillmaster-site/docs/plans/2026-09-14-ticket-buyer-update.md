@@ -21,3 +21,11 @@ The end time is the venue's scheduled window, not an independently confirmed scr
 The Elysian controls its own listing. The user requested prepared corrections, not sending. Its text still names Dulce Sloan; Leslie Liao is the confirmed replacement. The listing's wide poster says 7 p.m., while the heading and supplied announcement poster say 7:30 p.m. Provide the correct announcement artwork with the draft.
 
 A performance clip was a conditional review suggestion. No approved performance clip exists among the current site assets; no unrelated interview or synthetic footage is presented as a performance sample.
+
+## Validation
+
+- Production build passed.
+- Browser checks at widths 320, 390, 768, 900 and 1440: no horizontal overflow or broken visible hero images. The primary ticket button fits within each tested viewport.
+- Mobile menu opens and closes after a navigation choice. The featured-cast link reaches the cast section. Jenny's cast bio opens and closes using Escape.
+- All ticket links still point to the correct October 13 Elysian event. The National Archives source remains linked. All eleven cast entries and eight press previews remain present.
+- Existing bio content and the complete press archive match the prior revision. No VIP, RSVP, email or API source changed.
