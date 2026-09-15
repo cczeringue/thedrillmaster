@@ -1201,9 +1201,9 @@ a.hero__credit-name {
   transform-origin: var(--portrait-origin, center);
 }
 
-.portrait--jenny,
-.portrait--caleb,
-.portrait--jeffrey { --portrait-position: center 30%; }
+.portrait--jenny { --portrait-position: center; --portrait-scale: 2.4; }
+.portrait--caleb { --portrait-position: center 10%; --portrait-scale: 1.75; --portrait-origin: center 35%; }
+.portrait--jeffrey { --portrait-position: center top; --portrait-scale: 1.1; --portrait-origin: 70% 30%; }
 .portrait--dylan { --portrait-scale: 1.9; --portrait-origin: center 35%; }
 .portrait--jeremy { --portrait-position: center top; --portrait-scale: 1.5; --portrait-origin: center top; }
 .portrait--chad { --portrait-position: center 30%; }
@@ -3285,13 +3285,3 @@ a.hero__credit-name {
   .hero__figure,
   .hero__star { animation: none; }
 }
-
-.hero__details-link {
-  color: var(--ink);
-  font-size: 0.95rem;
-  line-height: 1.4;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-  padding-block: 0.4rem;
-}
-.hero__details-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }

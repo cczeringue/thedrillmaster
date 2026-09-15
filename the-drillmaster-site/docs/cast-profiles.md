@@ -125,3 +125,11 @@ Headshot extracted without alteration from page 5, the image beside Emon’s nam
 **Photo asset:** https://bethstelling.com/wp-content/uploads/2020/08/Beth-Stelling-Bio-Photo-Edit.jpg
 
 **Local asset:** `public/bios/cast/beth.webp`
+
+## Creator photographs in the cast list
+
+Updated September 15, 2026. The cast list uses the following original photographs in the same circular treatment as the other cast members. Creator cards, creator bio portraits and biography text retain their existing sketches and copy. Framing is CSS-only; no facial retouching or generated imagery.
+
+- Jenny Zigrino: [official site](https://www.jennyzigrino.com/), [photo](https://images.squarespace-cdn.com/content/v1/553d65e3e4b0fd1d73f67ea8/5159ab5f-f498-49f4-8333-09c67026c1f5/DSC08670.jpg?format=750w). Local asset: `public/bios/cast/jenny.jpg`.
+- Caleb Zeringue: existing official website headshot, copied from `/Users/caleb/Documents/Codex/2026-07-31/https-calebzeringue-com/public/images/caleb-headshot.jpg`. Local asset: `public/bios/cast/caleb.jpg`.
+- Jeffrey Jay: [official site](https://jeffreyjaycomedy.com/), [photo](https://jeffreyjaycomedy.com/wp-content/uploads/2022/03/jeffrey-31-rt-1.jpg?w=683). Local asset: `public/bios/cast/jeffrey.jpg`.
