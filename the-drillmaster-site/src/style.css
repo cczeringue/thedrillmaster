@@ -3119,6 +3119,43 @@ a.hero__credit-name {
   text-transform: uppercase;
 }
 
+.cast-quote {
+  margin: 1.75rem 0 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--brass);
+  text-align: center;
+  scroll-margin-top: 8rem;
+}
+
+.cast-quote p {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.cast-quote cite {
+  display: block;
+  margin-top: 0.65rem;
+  font-size: 1rem;
+  font-style: normal;
+}
+
+.cast-quote a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  color: var(--ink-light);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.cast-quote a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
 .show-details a,
 .cast-ticket-link {
   color: var(--ink-light);
