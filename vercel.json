@@ -88,25 +88,25 @@
   },
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [
         {
           "type": "host",
           "value": "thedrillmasterplay.info"
         }
       ],
-      "destination": "https://www.thedrillmaster.gay/:path*",
+      "destination": "https://www.thedrillmaster.gay/:path",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [
         {
           "type": "host",
           "value": "www.thedrillmasterplay.info"
         }
       ],
-      "destination": "https://www.thedrillmaster.gay/:path*",
+      "destination": "https://www.thedrillmaster.gay/:path",
       "permanent": true
     },
     {
