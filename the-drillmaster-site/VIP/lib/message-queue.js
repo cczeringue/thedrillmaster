@@ -2,26 +2,35 @@
 export function createMessageQueue(deliver, {
   schedule = setTimeout,
   cancel = clearTimeout,
+  now = Date.now,
   onPending = (_pending) => {},
 } = {}) {
   let items = [];
   let timer = null;
   let stopped = false;
   let current = null;
+  let paused = false;
+  let remaining = 0;
+  let dueAt = 0;
 
   function next() {
-    if (stopped || timer !== null) return;
-    const item = items.shift();
-    if (!item) { onPending(false); return; }
-    current = item;
+    if (stopped || paused || timer !== null) return;
+    if (!current) {
+      current = items.shift();
+      if (!current) { onPending(false); return; }
+      remaining = current.delay ?? 1000;
+    }
+    const item = current;
+    dueAt = now() + remaining;
     onPending(true);
     timer = schedule(() => {
       timer = null;
       current = null;
+      remaining = 0;
       if (stopped) return;
       deliver(item);
       next();
-    }, item.delay ?? 1000);
+    }, remaining);
   }
 
   return {
@@ -30,15 +39,32 @@ export function createMessageQueue(deliver, {
       items.push(...messages);
       next();
     },
+    pause() {
+      if (stopped || paused) return;
+      paused = true;
+      if (timer !== null) {
+        remaining = Math.max(0, dueAt - now());
+        cancel(timer);
+        timer = null;
+      }
+      onPending(false);
+    },
+    resume() {
+      if (stopped || !paused) return;
+      paused = false;
+      next();
+    },
     flush() {
       if (stopped) return;
       if (timer !== null) cancel(timer);
       timer = null;
-      const remaining = current ? [current, ...items] : items;
+      const queued = current ? [current, ...items] : items;
       current = null;
       items = [];
+      paused = false;
+      remaining = 0;
       // Explicit navigation reveals the conversation without a burst of sounds.
-      remaining.forEach(item => deliver(item, true));
+      queued.forEach(item => deliver(item, true));
       onPending(false);
     },
     stop() {

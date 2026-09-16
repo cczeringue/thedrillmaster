@@ -1,6 +1,7 @@
-import { Fragment, useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { ArrowDown, ArrowUpRight, CalendarDays, Check, Info, MapPin, Send, Ticket, Users, Volume2, VolumeX } from "lucide-react";
 import { AmericanFlagMark } from "./components/AmericanFlagMark";
+import { InvitationPanel } from "./components/InvitationPanel";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
@@ -12,7 +13,7 @@ import { rsvpSchema } from "./lib/rsvp-validation";
 import { clearPendingSubmission, getSubmissionId, submitRsvp } from "./lib/submit-rsvp";
 
 type Message = { id: string; side: "baron" | "guest"; text?: string; invitation?: boolean; rsvp?: boolean; delay?: number; action?: () => void };
-type Section = "details" | "cast" | "rsvp";
+type InfoSection = "details" | "cast";
 type RsvpReceipt = { name: string; guests: number; reference: string; emailStatus?: "sent" | "pending" | "failed" };
 
 function Portrait({ header = false }: { header?: boolean }) {
@@ -43,18 +44,18 @@ const CAST = [
 function InvitationDetails({ section }: { section: "details" | "cast" }) {
   if (section === "cast") return <>
     <span className="eyebrow">The company</span>
-    <h2>Quite the ensemble.</h2>
+    <h3>Quite the ensemble.</h3>
     <dl className="cast-list">{CAST.map(([name, role]) => <div key={name}><dt>{name}</dt><dd>{role}</dd></div>)}</dl>
     <p className="detail-note">Written by Jenny Zigrino, Caleb Zeringue, and Jeffrey Jay. Executive producer: Kimmie Kim.</p>
     <a className="text-link" href={`${EVENT.website}#team`} target="_blank" rel="noopener noreferrer">Meet the cast <ArrowUpRight size={16} aria-hidden="true" /></a>
   </>;
   return <>
     <span className="eyebrow">Your evening, sorted</span>
-    <h2>A date with history.</h2>
+    <h3>A date with history.</h3>
     <p>The mostly true story of America's GAYEST founding Daddy. A developmental preview of <strong>The Drillmaster</strong>, a queer historical comedy about Baron von Steuben.</p>
     <div className="logistics-row"><CalendarDays size={20} aria-hidden="true" /><div><strong>Tuesday, October 13, 2026</strong><span>Show {EVENT.time} · Doors {EVENT.doors}</span><span>Los Angeles time</span></div></div>
     <div className="logistics-row"><MapPin size={20} aria-hidden="true" /><div><strong>{EVENT.venue}</strong><span>{EVENT.address}</span></div></div>
-    <p className="detail-note">Creator's list tickets are available at no charge at the door. Add your name below for one or two tickets.</p>
+    <p className="detail-note">Creator's list tickets are available at no charge at the door. RSVP for one or two tickets.</p>
     <div className="detail-links">
       <a className="text-link" href="https://www.google.com/maps/search/?api=1&query=The+Elysian+1944+Riverside+Drive+Los+Angeles+CA+90039" target="_blank" rel="noopener noreferrer">Get directions <ArrowUpRight size={16} aria-hidden="true" /></a>
       <a className="text-link" href={EVENT.listing} target="_blank" rel="noopener noreferrer">The Elysian <ArrowUpRight size={16} aria-hidden="true" /></a>
@@ -129,8 +130,11 @@ export default function ChatPage() {
   const introPlaying = !messages.some(message => message.rsvp);
   const [receipt, setReceipt] = useState<RsvpReceipt | null>(null);
   const [announcement, setAnnouncement] = useState("");
-  const [activeSection, setActiveSection] = useState<Section | null>(null);
-  const [openedSections, setOpenedSections] = useState<Array<"details" | "cast">>([]);
+  const [panelSection, setPanelSection] = useState<InfoSection>("details");
+  const [panelOpen, setPanelOpen] = useState(false);
+  const panelOpenRef = useRef(false);
+  const panelOrigin = useRef<{ trigger: HTMLButtonElement; scrollTop: number } | null>(null);
+  const rsvpAfterPanel = useRef(false);
   const pendingDestination = useRef<string | null>(null);
   const threadRef = useRef<HTMLDivElement>(null);
   const readingManually = useRef(false);
@@ -160,12 +164,10 @@ export default function ChatPage() {
     thread.scrollTo({ top, behavior: immediate || reducedMotion() ? "instant" : "smooth" });
   }, []);
 
-  const navigateTo = useCallback((section: Section) => {
+  const navigateToRsvp = useCallback(() => {
     readingManually.current = true;
-    pendingDestination.current = section === "rsvp" ? "rsvp-panel" : `section-${section}`;
+    pendingDestination.current = "rsvp-panel";
     queueRef.current?.flush();
-    if (section !== "rsvp") setOpenedSections(previous => previous.includes(section) ? previous : [...previous, section]);
-    setActiveSection(section);
     // Already-visible destinations need no render before navigation.
     const target = document.getElementById(pendingDestination.current);
     if (target) {
@@ -174,6 +176,32 @@ export default function ChatPage() {
       pendingDestination.current = null;
     }
   }, [scrollTo]);
+
+  const openPanel = (section: InfoSection, trigger: HTMLButtonElement) => {
+    panelOpenRef.current = true;
+    queueRef.current?.pause();
+    const thread = threadRef.current;
+    const scrollTop = thread?.scrollTop ?? 0;
+    // Stop any in-progress automatic scroll before preserving this reading position.
+    thread?.scrollTo({ top: scrollTop, behavior: "instant" });
+    panelOrigin.current = { trigger, scrollTop };
+    rsvpAfterPanel.current = false;
+    setPanelSection(section);
+    setPanelOpen(true);
+  };
+
+  const closePanelFocus = (event: Event) => {
+    event.preventDefault();
+    panelOpenRef.current = false;
+    if (rsvpAfterPanel.current) {
+      rsvpAfterPanel.current = false;
+      navigateToRsvp();
+    } else {
+      threadRef.current?.scrollTo({ top: panelOrigin.current?.scrollTop ?? 0, behavior: "instant" });
+      panelOrigin.current?.trigger.focus({ preventScroll: true });
+      queueRef.current?.resume();
+    }
+  };
 
   useEffect(() => {
     const id = pendingDestination.current;
@@ -186,17 +214,28 @@ export default function ChatPage() {
       pendingDestination.current = null;
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [messages, activeSection, openedSections, scrollTo]);
+  }, [messages, scrollTo]);
 
   useEffect(() => {
     const latest = messages.at(-1);
     if (!latest) return;
     setAnnouncement(latest.text ?? (latest.rsvp ? "Your RSVP form is ready. Enter your name, email, and number of tickets." : "Your invitation has arrived."));
     const timer = window.setTimeout(() => {
-      if (!readingManually.current) scrollTo(latest.id);
+      if (!readingManually.current && !panelOpenRef.current) scrollTo(latest.id);
     }, 60);
     return () => window.clearTimeout(timer);
   }, [messages, scrollTo]);
+
+  const receiveRsvp = (result: RsvpReceipt) => {
+    // A verified reservation must appear immediately, even while a panel pauses the intro.
+    setReceipt(result);
+    setAnnouncement("Your name has been added to the Creator's list. Your tickets will be available at no charge at the door.");
+    if (!panelOpenRef.current) playSound();
+  };
+
+  useEffect(() => {
+    if (receipt && !panelOpenRef.current) scrollTo("rsvp-panel");
+  }, [receipt, scrollTo]);
 
   return <main className="experience">
     <aside className="desktop-caption" aria-hidden="true"><span>THE DRILLMASTER</span><span>A VERY PERSONAL INVITATION.</span></aside>
@@ -219,28 +258,29 @@ export default function ChatPage() {
         onKeyDown={event => { if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key)) readingManually.current = true; }} aria-label="Your invitation. Scroll to read the messages and RSVP form.">
         <div className="day-label">Today</div>
         <div className="message-stack">
-          {messages.map(message => <Fragment key={message.id}>
-            {message.rsvp && openedSections.map(section => <Bubble key={section} id={`section-${section}`} className="detail-bubble"><InvitationDetails section={section} /></Bubble>)}
-            <Bubble id={message.id} side={message.side} className={message.invitation ? "invitation-bubble" : message.rsvp ? "detail-bubble rsvp-bubble" : ""}>
+          {messages.map(message => <Bubble key={message.id} id={message.id} side={message.side} className={message.invitation ? "invitation-bubble" : message.rsvp ? "detail-bubble rsvp-bubble" : ""}>
             {message.invitation ? <><p className="invite-intro">Jenny Zigrino, Caleb Zeringue, and Jeffrey Jay cordially invite you to</p><h2>THE DRILLMASTER</h2><p className="invite-date">October 13 <span>•</span> 7:30 PM</p><p className="invite-venue">The Elysian, Los Angeles</p><a className="invite-poster-link" href="/VIP/assets/elysian-announcement.png" target="_blank" rel="noopener noreferrer" aria-label="Open The Drillmaster announcement poster"><img className="invite-poster" src="/VIP/assets/elysian-announcement.png" alt="The Drillmaster developmental preview at The Elysian, October 13 at 7:30 PM, with the ensemble cast." width="2160" height="2700" /></a></>
             : message.rsvp ? receipt ? <div className="confirmation" role="status"><span className="confirmation-icon"><Check size={24} aria-hidden="true" /></span><span className="eyebrow">Name added</span><h2>You’re on the Creator's list.</h2><p>Thank you, {receipt.name}. We’ve added your name for {receipt.guests === 1 ? "one ticket" : "two tickets"}.</p><p>Your tickets will be available for you at no charge at the door. We can’t wait to make a scene.</p>{receipt.emailStatus && <p className="confirmation-note">{receipt.emailStatus === "sent" ? "Your confirmation email is on its way, with the poster and calendar link. Check spam if you don’t see it." : receipt.emailStatus === "pending" ? "Your name is on the list. Your confirmation email may take a moment." : "Your name is on the list, but we couldn’t confirm email delivery. Save the details below, or contact the team for a copy."}</p>}<div className="confirmation-event"><strong>THE DRILLMASTER</strong><strong>October 13 · 7:30 PM</strong><span>The Elysian, Los Angeles</span></div><a className="text-link" href="/VIP/assets/the-drillmaster.ics" download><CalendarDays size={17} aria-hidden="true" />Add to calendar</a><p className="confirmation-note">Need to change your request? <a href={`mailto:${EVENT.email}?subject=Creator%27s%20list%20RSVP%20-%20${encodeURIComponent(receipt.reference)}`}>Contact the team</a>.</p></div>
-            : <RsvpForm onSuccess={result => { queueRef.current?.add({ id: "rsvp-received", side: "baron", delay: 300, action: () => { setReceipt(result); setAnnouncement("Your name has been added to the Creator's list. Your tickets will be available at no charge at the door."); window.setTimeout(() => scrollTo("rsvp-panel"), 80); } }); }} />
+            : <RsvpForm onSuccess={receiveRsvp} />
             : message.text}
-          </Bubble></Fragment>)}
+          </Bubble>)}
         </div>
         {pending && <div className="typing-indicator" aria-label="A message is on its way"><span /><span /><span /></div>}
         <div className="thread-end"><AmericanFlagMark size={22} /><span>History. But make it a date.</span></div>
       </div>
-      {introPlaying && <button className="skip-to-rsvp" type="button" onClick={() => navigateTo("rsvp")}>Skip to RSVP<ArrowDown size={16} aria-hidden="true" /></button>}
+      {introPlaying && <button className="skip-to-rsvp" type="button" onClick={navigateToRsvp}>Skip to RSVP<ArrowDown size={16} aria-hidden="true" /></button>}
       </div>
       <footer className="invitation-toolbar">
         <nav className="toolbar-actions" aria-label="Invitation shortcuts">
-          <button type="button" className="toolbar-link" onClick={() => navigateTo("details")} aria-current={activeSection === "details" ? "location" : undefined}><Info size={20} aria-hidden="true" /><span>Details</span></button>
-          <button type="button" className="toolbar-link" onClick={() => navigateTo("cast")} aria-current={activeSection === "cast" ? "location" : undefined}><Users size={20} aria-hidden="true" /><span>Cast</span></button>
-          <button type="button" className="toolbar-rsvp" onClick={() => navigateTo("rsvp")} aria-current={activeSection === "rsvp" ? "location" : undefined}>{receipt ? <Check size={21} aria-hidden="true" /> : <Ticket size={21} aria-hidden="true" />}<span>{receipt ? "My RSVP" : "RSVP"}</span></button>
+          <button type="button" className="toolbar-link" onClick={event => openPanel("details", event.currentTarget)} aria-haspopup="dialog" aria-expanded={panelOpen && panelSection === "details"} aria-controls={panelOpen && panelSection === "details" ? "invitation-info-panel" : undefined}><Info size={20} aria-hidden="true" /><span>Details</span></button>
+          <button type="button" className="toolbar-link" onClick={event => openPanel("cast", event.currentTarget)} aria-haspopup="dialog" aria-expanded={panelOpen && panelSection === "cast"} aria-controls={panelOpen && panelSection === "cast" ? "invitation-info-panel" : undefined}><Users size={20} aria-hidden="true" /><span>Cast</span></button>
+          <button type="button" className="toolbar-rsvp" onClick={navigateToRsvp}>{receipt ? <Check size={21} aria-hidden="true" /> : <Ticket size={21} aria-hidden="true" />}<span>{receipt ? "My RSVP" : "RSVP"}</span></button>
         </nav>
         <div className="toolbar-meta"><span>Creator's list · No charge</span><button className="sound-toggle" type="button" onClick={toggleSound} aria-label={sound === "on" ? "Mute message sounds" : "Enable message sounds"}>{sound === "on" ? <Volume2 size={15} /> : <VolumeX size={15} />}{sound === "blocked" ? "Tap for sound" : sound === "on" ? "Sound on" : "Sound off"}</button></div>
       </footer>
+      <InvitationPanel open={panelOpen} section={panelSection} introPlaying={introPlaying} hasReceipt={!!receipt} onOpenChange={setPanelOpen} onCloseAutoFocus={closePanelFocus} onRsvp={() => { rsvpAfterPanel.current = true; setPanelOpen(false); }}>
+        <InvitationDetails section={panelSection} />
+      </InvitationPanel>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
     </section>
     <aside className="desktop-date" aria-hidden="true"><span>OCTOBER 13</span><span>LOS ANGELES · 2026</span></aside>
