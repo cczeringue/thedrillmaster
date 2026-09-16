@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Info, MapPin, Send, Ticket, Users, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ExternalLink, Info, MapPin, Send, Ticket, Users, Volume2, VolumeX } from "lucide-react";
 import { AmericanFlagMark } from "./components/AmericanFlagMark";
 import { InvitationPanel } from "./components/InvitationPanel";
 import { Button } from "./components/ui/button";
@@ -246,7 +246,7 @@ export default function ChatPage() {
         <AmericanFlagMark className="flag-mark" />
       </header>
       <div className="event-strip">
-        <strong className="event-premise">The Drillmaster- America's GAYEST founding Daddy</strong>
+        <a className="event-premise" href={EVENT.website} target="_blank" rel="noopener noreferrer"><strong>The Drillmaster- America's GAYEST founding Daddy</strong><ExternalLink size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
         <span className="event-format">A developmental preview</span>
         <div className="event-logistics"><Ticket size={15} aria-hidden="true" /><span>OCT 13 <span className="strip-dot">·</span> 7:30 PM <span className="strip-dot">·</span> THE ELYSIAN</span></div>
       </div>
