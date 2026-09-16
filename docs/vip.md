@@ -14,11 +14,11 @@ The chat was imported from `https://drillmaster-vip-chat.cbiscuit.chatgpt.site`.
 
 ## Message playback
 
-The invitation includes the supplied Elysian announcement poster, with an eight-second pause before the next message. Scrolling manually by wheel, touch, or keyboard stops automatic message scrolling for that page load; the remaining messages and form still arrive. The scripted messages use one delivery queue and arrive separately, with the classic Grindr notification audio for each new message when sound is enabled. Browsers that block autoplay show “Tap for sound.” The sound control can also mute playback.
+The invitation includes the supplied Elysian announcement poster. The automatic intro takes about seven seconds; a fixed Details / Cast / RSVP toolbar is available immediately, with a yellow RSVP button that reveals and jumps straight to the form. Toolbar use, form focus, or manual scrolling stops automatic message scrolling. Details and Cast appear as reusable message bubbles before the final form. There is no chat composer. The scripted messages use one delivery queue and arrive separately, with the classic Grindr notification audio for each new message when sound is enabled. Skipping the queue does not trigger a burst of notification sounds. Browsers that block autoplay show “Tap for sound.” The sound control can also mute playback.
 
 The RSVP form is the final message and appears automatically after the scripted exchange. It invites guests to add their names to the Creator's list for one or two tickets available at no charge at the door, and includes the developmental-preview format, date, show and door times, venue, and address. Jenny Zigrino, Caleb Zeringue, and Jeffrey Jay are named as the inviters. The fixed event bar identifies the story as America’s Gayest Founding Daddy and the event as a developmental preview. The header says “Personal invitation” without an online status indicator. There is no message composer, suggested reply, chat menu, or interactive topic handler. The form cannot be dismissed; sound remains independently controllable.
 
-Conversation state, form state, and the displayed receipt reset on each page load. Saved RSVP records remain on the server. No guest receipt is restored from browser storage.
+Conversation state, form fields, and the displayed receipt reset on each page load. Saved RSVP records remain on the server. During an uncertain submission, session storage retains only an opaque hash of the submitted details and its UUID. Re-entering the same details after a reload reuses that UUID to recover the existing reservation. No name, email, conversation, or receipt is restored from browser storage. Restricted browser storage does not prevent submitting.
 
 ## RSVP storage
 
@@ -32,6 +32,8 @@ The writer opens only the fixed RSVP sheet, validates fields and ticket limits, 
 
 The server retries an unverified Google response once using the same UUID. This covers a connection interruption after a successful write without creating a duplicate RSVP.
 
+The browser also retries transient failures up to three times with bounded waits and a 45-second per-attempt timeout. Retries always reuse the exact same payload and UUID, and accept only a matching verified receipt. Validation errors are not retried. Fields stay fixed after an uncertain attempt so a retry cannot silently change a reservation that may already exist. Server logs record only reference, failure category, attempt and HTTP status, never guest details or tokens.
+
 Requests for more than two tickets link to `thedrillmasterplay@gmail.com`. Successful signups show that the guest's name is on the list and tickets will be available at no charge at the door.
 
 The original Sites database retains an explicitly labeled QA record with reference `98fff494-9e21-4a7a-91e8-cf954cb14527`. It is not an attendee and should not be imported into the invite list.
@@ -40,7 +42,7 @@ The original Sites database retains an explicitly labeled QA record with referen
 
 Use the existing Vercel project and GitHub deployment flow. Both root and nested Vercel configurations include the `/VIP` rewrite and search exclusion headers, matching the repository's existing two-root setup.
 
-From `the-drillmaster-site`, run `npm ci`, `npm run build`, `npm run typecheck:vip`, and `npm run test:vip`. For local RSVP testing, provide the server-only connection variables in an ignored `.env.local` or the process environment, then run `npm run dev`. Do not add VIP to navigation, structured data, or a sitemap.
+From `the-drillmaster-site`, run `npm ci` and `npm run build`. The prebuild hook runs all VIP regression tests and TypeScript checks on every Vercel build. Tests cover lost acknowledgments after a real save, duplicate prevention, invalid receipts, bounded retries, blocked browser storage, intro skipping, and slow email delivery. For local RSVP testing, provide the server-only connection variables in an ignored `.env.local` or the process environment, then run `npm run dev`. Vercel hides sensitive tokens in environment exports; an empty exported token does not prove the production token is missing. Do not add VIP to navigation, structured data, or a sitemap.
 
 ## Confirmation email
 
@@ -51,5 +53,7 @@ After a verified Sheet save, Vercel sends a personal confirmation through the ex
 The email follows the public website's sage, parchment, ink, coral, and brass palette, with serif typography and an open invitation layout. Its wordmark is the original `public/brand/title-black.svg`, exported to an email-compatible PNG at `public/VIP/assets/email-wordmark.png` with the site's sage background. Typography falls back to Palatino, Garamond, and Georgia in clients that do not load the website fonts. The announcement poster remains unchanged.
 
 Email failure does not undo a confirmed RSVP. The website reports whether the provider accepted the email and offers the saved event details and team contact if delivery is unconfirmed. Provider acceptance is not a guarantee of inbox placement. No email status, recipient address, or provider secret is exposed beyond the minimal receipt/status returned to that guest. API requests cannot directly invoke the private email actions.
+
+In production the verified RSVP receipt is returned as soon as the Sheet acknowledges storage. Vercel's `waitUntil` keeps the confirmation email task running after that response. The page describes the email as pending, while clearly confirming the saved reservation. A slow mail provider can no longer delay the RSVP success screen. Local development awaits delivery for easier debugging. Email failures remain separately logged and never cause a saved reservation to appear unsuccessful.
 
 To diagnose delivery, search Brevo transactional logs by the RSVP reference tag. The Apps Script property `confirmation:<reference>` stores the delivery state and provider message ID. `sent` means provider accepted, `failed` means rejected, and `uncertain` means the response could not be confirmed. The Google Sheet remains the authority for door tickets.

@@ -88,3 +88,21 @@ test('the downloadable calendar includes the confirmed Creator list and free doo
  const calendar=readFileSync(new URL('../public/VIP/assets/the-drillmaster.ics',import.meta.url),'utf8').replace(/\r?\n /g,'');
  assert.match(calendar,/no charge/);assert.doesNotMatch(calendar,/confirm availability/);
 });
+
+test('production confirms the saved reservation while email is still running', async () => {
+ let release;
+ const held = new Promise(resolve => { release = resolve; });
+ const background = [];
+ const responsePromise = handleVipRsvp(req(), { env, waitUntil: task => background.push(task), fetchImpl: async (_url, options) => {
+   const body = JSON.parse(options.body);
+   if (body.action) { await held; return Response.json({ ok: true, status: 'sent' }); }
+   return Response.json(receipt);
+ } });
+ const result = await Promise.race([responsePromise, new Promise(resolve => setTimeout(() => resolve(null), 50))]);
+ release();
+ await Promise.all(background);
+ assert.ok(result, 'Saved RSVP must not wait for email');
+ assert.equal(result.status, 201);
+ assert.equal((await result.json()).emailStatus, 'pending');
+ assert.equal(background.length, 1);
+});

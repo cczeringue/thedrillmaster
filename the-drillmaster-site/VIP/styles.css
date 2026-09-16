@@ -100,8 +100,24 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .typing-indicator span:nth-child(2) { animation-delay: 150ms; }
 .typing-indicator span:nth-child(3) { animation-delay: 300ms; }
 @keyframes typing { to { opacity: 0.3; } }
-.audio-controls { display: flex; justify-content: flex-end; flex-shrink: 0; padding: 0 20px env(safe-area-inset-bottom); background: #1c1c1c; }
-.sound-toggle { min-height: 44px; display: inline-flex; align-items: center; gap: 5px; color: var(--amber); background: transparent; border: 0; font-size: 11px; padding: 5px; white-space: nowrap; }
+.invitation-toolbar { flex-shrink: 0; padding: 10px 16px max(4px, env(safe-area-inset-bottom)); background: #1c1c1c; border-top: 1px solid #343434; }
+.toolbar-actions { display: grid; grid-template-columns: 1fr 1fr 1.55fr; gap: 9px; }
+.toolbar-actions button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 0; font-size: 14px; font-weight: 700; }
+.toolbar-link { background: #292929; color: #e8e8e8; border: 1px solid #444; }
+.toolbar-link:hover, .toolbar-link[aria-current] { background: #333; border-color: var(--amber); color: var(--amber); }
+.toolbar-rsvp { background: var(--amber); border: 1px solid var(--amber); color: #111; }
+.toolbar-rsvp:hover { background: #ffda57; border-color: #ffda57; }
+.toolbar-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 10px; color: #aaa; }
+.sound-toggle { min-height: 32px; display: inline-flex; align-items: center; gap: 5px; color: var(--amber); background: transparent; border: 0; font-size: 11px; padding: 5px 0 5px 8px; white-space: nowrap; }
+.cast-list { margin: 0 0 22px; }
+.cast-list > div { padding-block: 9px; border-bottom: 1px solid #10101026; }
+.cast-list dt { font-size: 16px; font-weight: 700; }
+.cast-list dd { margin: 2px 0 0; font-size: 13px; }
+.logistics-row { display: flex; gap: 10px; margin-block: 20px; }
+.logistics-row > svg { flex-shrink: 0; margin-top: 2px; }
+.logistics-row > div { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.detail-bubble .detail-note { font-size: 13px; }
+.detail-links { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .rsvp-form .more-tickets { font-size: 12px; line-height: 1.5; margin: 0 0 18px; }
 .more-tickets a { text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
 @media (max-width: 370px) { .invite-poster-link { margin-inline: -14px; } }
@@ -127,10 +143,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .party-menu { background: #f6fcff; color: #141414; border: 1px solid #111; border-radius: 0; }
 .party-menu [role=option] { border-radius: 0; min-height: 43px; font-size: 15px; cursor: pointer; }
 .party-menu [role=option]:focus { background: #d5effb; color: #111; }
-.submit-rsvp { background: #101010; color: #fff; width: 100%; min-height: 48px; border-radius: 0; font-size: 15px; padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; }
-.submit-rsvp:hover { background: #303030; color: #fff; }
+.submit-rsvp { background: var(--amber); color: #111; border: 1px solid #111; width: 100%; min-height: 48px; border-radius: 0; font-size: 15px; font-weight: 700; padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; }
+.submit-rsvp:hover { background: #ffda57; color: #111; }
 .rsvp-form .privacy-copy { font-size: 11px; line-height: 1.5; margin: 13px 0 0; color: #263f4a; }
 .rsvp-form .form-error { padding: 10px 12px; background: #fff1ed; color: #8d1919; font-size: 13px; border-left: 3px solid #a72121; }
+.rsvp-form .form-error p { font-size: 13px; }
+.rsvp-form .form-error .retry-note { font-size: 12px; }
+.rsvp-form fieldset:disabled .rsvp-input, .rsvp-form fieldset:disabled .rsvp-select { opacity: 0.8; }
 .confirmation-icon { display: grid; place-items: center; width: 40px; height: 40px; color: #fff; background: #111; margin-bottom: 20px; }
 .confirmation-event { display: flex; flex-direction: column; gap: 5px; padding: 19px 0; margin: 20px 0; border-block: 1px solid #10101033; font-size: 15px; }
 .confirmation .confirmation-note { font-size: 12px; margin: 22px 0 0; }

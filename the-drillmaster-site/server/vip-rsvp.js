@@ -19,7 +19,7 @@ function json(body, status, headers = {}) {
 
 // Google Sheets is authoritative when configured. Preserve the original backend during setup.
 // The endpoint can submit a request, never read the guest list or proxy other URLs.
-export async function handleVipRsvp(request, { env = process.env, fetchImpl = fetch } = {}) {
+export async function handleVipRsvp(request, { env = process.env, fetchImpl = fetch, waitUntil, logger = console } = {}) {
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405, { Allow: 'POST' });
   const origin = request.headers.get('origin');
   if (request.headers.get('sec-fetch-site') === 'cross-site' ||
@@ -56,11 +56,16 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
   }
   const parsed = rsvpSchema.safeParse(input);
   if (!parsed.success) return json({ error: parsed.error.issues[0]?.message ?? 'Please check your details.' }, 400);
-  if (!env.VIP_RSVP_SHEETS_URL && !env.VIP_RSVP_UPSTREAM_TOKEN) return json({ error: unavailable }, 503);
+  if ((!env.VIP_RSVP_SHEETS_URL && !env.VIP_RSVP_UPSTREAM_TOKEN) ||
+      (env.VIP_RSVP_SHEETS_URL && !env.VIP_RSVP_SHEETS_TOKEN)) {
+    logger.error('VIP RSVP unavailable', { reference: parsed.data.id, category: 'configuration' });
+    return json({ error: unavailable, retryable: true }, 503);
+  }
 
   // A transient Google response can fail after the row was written. Retry once
   // with the same UUID so the writer returns the original receipt without a second row.
   const attempts = env.VIP_RSVP_SHEETS_URL ? 2 : 1;
+  let receipt;
   for (let attempt = 0; attempt < attempts; attempt++) try {
     const response = env.VIP_RSVP_SHEETS_URL
       ? await saveToGoogleSheet(parsed.data, { env, fetchImpl })
@@ -76,12 +81,28 @@ export async function handleVipRsvp(request, { env = process.env, fetchImpl = fe
     });
     const saved = rsvpReceiptSchema.safeParse(await response.json());
     if (!response.ok || !saved.success || saved.data.reference !== parsed.data.id) {
+      logger.error('VIP RSVP unverified', { reference: parsed.data.id, attempt: attempt + 1, category: 'storage_receipt', httpStatus: response.status });
       continue;
     }
-    // Both storage endpoints return the actual stored receipt on an idempotent retry.
-    const emailStatus = env.BREVO_API_KEY
-      ? await sendVipConfirmation(saved.data.reference, { env, fetchImpl }) : undefined;
-    return json({ ...saved.data, ...(emailStatus ? { emailStatus } : {}) }, 201);
-  } catch { /* Retry the same request, then report an unverified save. */ }
-  return json({ error: unavailable }, 503);
+    receipt = saved.data;
+    break;
+  } catch (error) {
+    logger.error('VIP RSVP unverified', { reference: parsed.data.id, attempt: attempt + 1,
+      category: error?.name === 'TimeoutError' ? 'storage_timeout' : 'storage_response' });
+  }
+  if (!receipt) return json({ error: unavailable, retryable: true }, 503);
+
+  // A confirmed save is final. Email processing can never turn it into a failed RSVP.
+  let emailStatus;
+  if (env.BREVO_API_KEY) {
+    const delivery = sendVipConfirmation(receipt.reference, { env, fetchImpl }).catch(() => {
+      logger.error('VIP confirmation failed after save', { reference: receipt.reference });
+      return 'failed';
+    });
+    if (waitUntil) {
+      try { waitUntil(delivery); emailStatus = 'pending'; }
+      catch { emailStatus = await delivery; }
+    } else emailStatus = await delivery;
+  }
+  return json({ ...receipt, ...(emailStatus ? { emailStatus } : {}) }, 201);
 }

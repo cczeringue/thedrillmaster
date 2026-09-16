@@ -1,4 +1,5 @@
 import { handleVipRsvp } from '../server/vip-rsvp.js';
+import { waitUntil } from '@vercel/functions';
 
 export default async function handler(req, res) {
   const headers = new Headers();
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     options.body = typeof req.body === 'string' || Buffer.isBuffer(req.body) ? req.body : JSON.stringify(req.body ?? {});
   }
-  const response = await handleVipRsvp(new Request(url, options));
+  const response = await handleVipRsvp(new Request(url, options), { waitUntil });
   res.statusCode = response.status;
   response.headers.forEach((value, key) => res.setHeader(key, value));
   res.end(await response.text());

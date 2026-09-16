@@ -7,6 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "prebuild": "npm run test:vip && npm run typecheck:vip",
     "test:vip": "node --test tests/vip-*.test.mjs",
     "typecheck:vip": "tsc --noEmit",
     "dev": "vite",
@@ -14,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/functions": "3.9.8",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "1.31.0",
