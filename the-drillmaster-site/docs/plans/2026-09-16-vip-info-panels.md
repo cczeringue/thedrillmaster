@@ -21,3 +21,11 @@ Charcoal panels, yellow accents, Roboto, and a fixed action footer match the inv
 - The full build runs all 39 regression tests and TypeScript checks.
 - Browser checks cover 320px, 390px, and 1280px widths; focus trapping and restoration; normal playback resumption; repeated panel visits; direct panel-to-RSVP navigation; preserved draft fields; and a delayed simulated RSVP response while a panel is open.
 - The delayed-response fixture runs only on localhost and does not write a Sheet row or send an email.
+
+## Website drawer
+
+The title in the event bar opens the full main website in the same drawer system. It uses a same-origin iframe, wider on desktop and full-width on phones, with the chat paused and Back to chat / RSVP controls always available. The title now uses a drawer chevron instead of an external-link icon.
+
+An iframe load is accepted only when the expected site navigation is present. Failed loads offer retry and an optional external link; a slow load gets help after 12 seconds. Frame listeners are cleaned up on navigation and unmount. Escape closes an embedded bio dialog first, then the website drawer on a subsequent press.
+
+Verified at 320px, 390px, and 1280px: embedded homepage rendering, paused chat, nested bio Escape behavior, focus return, direct RSVP navigation, and a simulated failed homepage load followed by successful retry. All 39 regression tests and the production build passed.

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, ExternalLink, Info, MapPin, Send, Ticket, Users, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, ChevronUp, Info, MapPin, Send, Ticket, Users, Volume2, VolumeX } from "lucide-react";
 import { AmericanFlagMark } from "./components/AmericanFlagMark";
 import { InvitationPanel } from "./components/InvitationPanel";
+import { WebsitePreview } from "./components/WebsitePreview";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
@@ -13,7 +14,7 @@ import { rsvpSchema } from "./lib/rsvp-validation";
 import { clearPendingSubmission, getSubmissionId, submitRsvp } from "./lib/submit-rsvp";
 
 type Message = { id: string; side: "baron" | "guest"; text?: string; invitation?: boolean; rsvp?: boolean; delay?: number; action?: () => void };
-type InfoSection = "details" | "cast";
+type InfoSection = "details" | "cast" | "website";
 type RsvpReceipt = { name: string; guests: number; reference: string; emailStatus?: "sent" | "pending" | "failed" };
 
 function Portrait({ header = false }: { header?: boolean }) {
@@ -246,7 +247,7 @@ export default function ChatPage() {
         <AmericanFlagMark className="flag-mark" />
       </header>
       <div className="event-strip">
-        <a className="event-premise" href={EVENT.website} target="_blank" rel="noopener noreferrer"><strong>The Drillmaster- America's GAYEST founding Daddy</strong><ExternalLink size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
+        <button className="event-premise" type="button" onClick={event => openPanel("website", event.currentTarget)} aria-haspopup="dialog" aria-expanded={panelOpen && panelSection === "website"} aria-controls={panelOpen && panelSection === "website" ? "invitation-info-panel" : undefined}><strong>The Drillmaster- America's GAYEST founding Daddy</strong><ChevronUp size={17} aria-hidden="true" /><span className="sr-only"> (opens website in a drawer)</span></button>
         <span className="event-format">A developmental preview</span>
         <div className="event-logistics"><Ticket size={15} aria-hidden="true" /><span>OCT 13 <span className="strip-dot">·</span> 7:30 PM <span className="strip-dot">·</span> THE ELYSIAN</span></div>
       </div>
@@ -279,7 +280,7 @@ export default function ChatPage() {
         <div className="toolbar-meta"><span>Creator's list · No charge</span><button className="sound-toggle" type="button" onClick={toggleSound} aria-label={sound === "on" ? "Mute message sounds" : "Enable message sounds"}>{sound === "on" ? <Volume2 size={15} /> : <VolumeX size={15} />}{sound === "blocked" ? "Tap for sound" : sound === "on" ? "Sound on" : "Sound off"}</button></div>
       </footer>
       <InvitationPanel open={panelOpen} section={panelSection} introPlaying={introPlaying} hasReceipt={!!receipt} onOpenChange={setPanelOpen} onCloseAutoFocus={closePanelFocus} onRsvp={() => { rsvpAfterPanel.current = true; setPanelOpen(false); }}>
-        <InvitationDetails section={panelSection} />
+        {panelSection === "website" ? <WebsitePreview onClose={() => setPanelOpen(false)} /> : <InvitationDetails section={panelSection} />}
       </InvitationPanel>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
     </section>
