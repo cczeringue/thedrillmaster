@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ArrowDown, ArrowUpRight, CalendarDays, Check, Info, MapPin, Send, Ticket, Users, VenetianMask, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, Info, MapPin, Send, Ticket, Users, Volume2, VolumeX } from "lucide-react";
+import { AmericanFlagMark } from "./components/AmericanFlagMark";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
@@ -203,7 +204,7 @@ export default function ChatPage() {
       <header className="chat-header">
         <Portrait header />
         <div className="contact"><h1>Baron von Steuben</h1><div className="invitation-status">Personal invitation</div></div>
-        <VenetianMask className="mask-mark" size={31} aria-hidden="true" />
+        <AmericanFlagMark className="flag-mark" />
       </header>
       <div className="event-strip">
         <strong className="event-premise">The Drillmaster- America's GAYEST founding Daddy</strong>
@@ -228,7 +229,7 @@ export default function ChatPage() {
           </Bubble></Fragment>)}
         </div>
         {pending && <div className="typing-indicator" aria-label="A message is on its way"><span /><span /><span /></div>}
-        <div className="thread-end"><VenetianMask size={18} aria-hidden="true" /><span>History. But make it a date.</span></div>
+        <div className="thread-end"><AmericanFlagMark size={22} /><span>History. But make it a date.</span></div>
       </div>
       {introPlaying && <button className="skip-to-rsvp" type="button" onClick={() => navigateTo("rsvp")}>Skip to RSVP<ArrowDown size={16} aria-hidden="true" /></button>}
       </div>
