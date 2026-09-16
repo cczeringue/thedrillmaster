@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ArrowUpRight, CalendarDays, Check, Info, MapPin, Send, Ticket, Users, VenetianMask, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, Check, Info, MapPin, Send, Ticket, Users, VenetianMask, Volume2, VolumeX } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
@@ -125,6 +125,7 @@ function RsvpForm({ onSuccess }: { onSuccess: (receipt: RsvpReceipt) => void }) 
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const introPlaying = !messages.some(message => message.rsvp);
   const [receipt, setReceipt] = useState<RsvpReceipt | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const [activeSection, setActiveSection] = useState<Section | null>(null);
@@ -209,6 +210,7 @@ export default function ChatPage() {
         <span className="event-format">A developmental preview</span>
         <div className="event-logistics"><Ticket size={15} aria-hidden="true" /><span>OCT 13 <span className="strip-dot">·</span> 7:30 PM <span className="strip-dot">·</span> THE ELYSIAN</span></div>
       </div>
+      <div className={`chat-viewport${introPlaying ? " intro-playing" : ""}`}>
       <div className="chat-thread" ref={threadRef} tabIndex={0}
         onFocusCapture={event => { if (event.target !== event.currentTarget) readingManually.current = true; }}
         onWheel={() => { readingManually.current = true; }}
@@ -227,6 +229,8 @@ export default function ChatPage() {
         </div>
         {pending && <div className="typing-indicator" aria-label="A message is on its way"><span /><span /><span /></div>}
         <div className="thread-end"><VenetianMask size={18} aria-hidden="true" /><span>History. But make it a date.</span></div>
+      </div>
+      {introPlaying && <button className="skip-to-rsvp" type="button" onClick={() => navigateTo("rsvp")}>Skip to RSVP<ArrowDown size={16} aria-hidden="true" /></button>}
       </div>
       <footer className="invitation-toolbar">
         <nav className="toolbar-actions" aria-label="Invitation shortcuts">

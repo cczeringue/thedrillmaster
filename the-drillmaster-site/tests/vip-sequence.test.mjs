@@ -81,15 +81,20 @@ test('a stopped queue cannot reveal old messages through a toolbar jump', () => 
   assert.deepEqual(shown, []);
 });
 
-test('the actual intro reaches the form within seven seconds, one message at a time', () => {
+test('the intro uses a readable chat pace, with a longer poster beat before the form', () => {
   const time = clock(), shown = [];
   const queue = createMessageQueue(message => shown.push(message), time);
   queue.add(...INTRO_MESSAGES);
-  time.advance(249);
+  time.advance(599);
   assert.equal(shown.length, 0);
   time.advance(1);
   assert.equal(shown.length, 1);
-  time.advance(6750);
+  time.advance(7000);
+  assert.equal(shown.some(message => message.rsvp), false, 'The normal chat must not rush through in seven seconds');
+  assert.equal(shown.at(-1)?.invitation, true);
+  time.advance(7300);
+  assert.equal(shown.at(-1)?.invitation, true, 'The poster gets an uninterrupted reading beat');
+  time.advance(8700);
   assert.equal(shown.at(-1)?.id, 'rsvp-panel');
   assert.equal(shown.at(-1)?.rsvp, true);
   assert.equal(new Set(shown.map(message => message.id)).size, shown.length);
