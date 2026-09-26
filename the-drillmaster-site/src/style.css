@@ -1258,7 +1258,7 @@ a.hero__credit-name {
   margin-block: 1.4rem;
 }
 
-/* Producer portraits complement the illustrated writer profiles above. */
+/* Producers share the writers’ illustrated portraits and decorative frames. */
 .creative-producers {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1281,19 +1281,6 @@ a.hero__credit-name {
   background: none;
   text-align: center;
   font: inherit;
-}
-
-.producer-card__photo {
-  display: block;
-  width: 160px;
-  height: 160px;
-  margin-bottom: 0.75rem;
-  object-fit: cover;
-  object-position: center 25%;
-  border: 3px solid var(--coral);
-  border-radius: 50%;
-  outline: 1px solid var(--teal-bg);
-  outline-offset: 4px;
 }
 
 .producer-card__role {
