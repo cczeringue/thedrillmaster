@@ -878,7 +878,7 @@ a.hero__credit-name {
 }
 
 .tickets-tease {
-  max-width: 560px;
+  max-width: 720px;
   margin: 0 auto 2.5rem;
   text-align: center;
 }
@@ -890,18 +890,21 @@ a.hero__credit-name {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--brass);
-  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  margin-bottom: 1.1rem;
 }
 
+/* A sentence-length headline needs a reading measure, not hero-scale type. */
 .tickets-tease__heading {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 6vw, 3.75rem);
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  line-height: 1;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.13;
   text-wrap: balance;
+  max-width: 19ch;
   color: var(--ink);
-  margin-bottom: 0.55rem;
+  margin: 0 auto 1.25rem;
 }
 
 .tickets-tease__meta {
@@ -920,6 +923,13 @@ a.hero__credit-name {
   color: var(--ink-light);
   margin: 0 auto 1.5rem;
   max-width: 34rem;
+}
+
+.tickets-tease__admission {
+  margin: 0.9rem auto 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink-light);
 }
 
 .tickets-tease .btn {
