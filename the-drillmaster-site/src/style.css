@@ -1248,28 +1248,73 @@ a.hero__credit-name {
   margin-block: 1.4rem;
 }
 
-.producer-credit {
-  width: min(320px, 100%);
+/* Producer portraits complement the illustrated writer profiles above. */
+.creative-producers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+  width: min(640px, 100%);
   margin: 3.5rem auto 0;
-  padding-top: 1.5rem;
+  padding-top: 2.5rem;
   border-top: 1px solid var(--brass);
+}
+
+.producer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.5rem;
+  border: 0;
+  background: none;
   text-align: center;
+  font: inherit;
 }
 
-.producer-credit__role {
-  margin-bottom: 0.5rem;
+.producer-card__photo {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin-bottom: 0.75rem;
+  object-fit: cover;
+  object-position: center 25%;
+  border: 3px solid var(--coral);
+  border-radius: 50%;
+  outline: 1px solid var(--teal-bg);
+  outline-offset: 4px;
+}
+
+.producer-card__role {
+  margin: 0;
   color: var(--teal);
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-style: italic;
 }
 
-.producer-credit__name {
+.producer-card__name {
   margin: 0;
   color: var(--cream);
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.producer-card--interactive { cursor: pointer; }
+.producer-card--interactive:hover .producer-card__name { text-decoration: underline; }
+.producer-card--interactive:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+@media (max-width: 560px) {
+  .creative-producers {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 }
 
 @media (max-width: 420px) {

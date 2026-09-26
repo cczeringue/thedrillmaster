@@ -54,6 +54,7 @@ const bioContents = {
   leslie: document.getElementById('bio-content-leslie'),
   mary: document.getElementById('bio-content-mary'),
   beth: document.getElementById('bio-content-beth'),
+  hannah: document.getElementById('bio-content-hannah'),
 };
 
 let lastFocusedBeforeModal = null;

@@ -384,9 +384,18 @@
       </button>
 
     </div>
-    <div class="producer-credit">
-      <p class="producer-credit__role">Executive Producer</p>
-      <p class="producer-credit__name">Kimmie Kim</p>
+    <div class="creative-producers" aria-label="Producing team">
+      <article class="producer-card">
+        <img class="producer-card__photo" src="/bios/creative/kimmie-kim.png" alt="Kimmie Kim" width="160" height="160" loading="lazy" decoding="async" />
+        <p class="producer-card__role">Executive Producer</p>
+        <h3 class="producer-card__name">Kimmie Kim</h3>
+      </article>
+      <button type="button" class="producer-card producer-card--interactive" data-bio="hannah" aria-haspopup="dialog" aria-label="Read Hannah Elsy Productions bio">
+        <img class="producer-card__photo" src="/bios/creative/hannah-elsy.jpg" alt="Hannah Elsy" width="160" height="160" loading="lazy" decoding="async" />
+        <span class="producer-card__role">Executive Producer Services by</span>
+        <span class="producer-card__name">Hannah Elsy Productions</span>
+        <span class="creator-card__cta">Read Bio</span>
+      </button>
     </div>
     <p class="creative-art-credit">Art by <a href="https://www.instagram.com/levihastingsart/" target="_blank" rel="noopener">Levi Hastings</a></p>
   </section>
@@ -631,6 +640,23 @@
           </div>
         </div>
 
+
+        <div id="bio-content-hannah" class="bio-modal__body bio-modal__body--cast" hidden>
+          <div class="bio-modal__header">
+            <p class="bio-modal__role">Executive Producer Services by</p>
+            <h2 id="bio-modal-title-hannah" class="bio-modal__name">Hannah Elsy Productions</h2>
+            <div class="bio-modal__portrait-wrap">
+              <img class="bio-modal__portrait" src="/bios/creative/hannah-elsy.jpg" alt="Hannah Elsy" width="168" height="168" loading="lazy" decoding="async" />
+            </div>
+            <div class="bio-modal__rule" aria-hidden="true"></div>
+            <div class="bio-modal__links">
+              <a class="bio-modal__link-btn" href="https://www.hannahelsy.com/" target="_blank" rel="noopener">hannahelsy.com</a>
+            </div>
+          </div>
+          <div class="bio-modal__text">
+            <p>Hannah Elsy Productions is a theatre producer and production consultant based in the UK bringing the shows to the stage and beyond. Hannah is also the founder of Superfanbase, an investment platform for the entertainment sector.</p>
+          </div>
+        </div>
 
         <div id="bio-content-dylan" class="bio-modal__body bio-modal__body--cast" hidden>
           <div class="bio-modal__header">
