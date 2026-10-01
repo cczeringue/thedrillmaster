@@ -57,19 +57,27 @@ test('a transient Sheets response retries the same UUID only once', async () => 
   assert.equal(unavailable.status, 503);
 });
 
-function fixture() {
-  const rows = [['Name', 'Email', 'Tickets needed', 'Received at', 'RSVP reference']];
+function fixture(initialRows) {
+  const rows = initialRows || [['Name', 'Email', 'Tickets needed', 'Received at', 'RSVP reference']];
   let writes = 0, locked = false;
   const sheet = {
     getLastRow: () => rows.length, getMaxRows: () => 1000,
-    getRange(row, col, count) {
+    getLastColumn: () => Math.max(...rows.map(row => row.length)),
+    getRange(row, col, count, width = 1) {
+      const values = () => Array.from({ length: count }, (_, r) => Array.from({ length: width }, (_, c) => rows[row - 1 + r]?.[col - 1 + c] ?? ''));
       return {
-        getValues: () => rows.slice(row - 1, row - 1 + count),
-        getDisplayValues: () => rows.slice(row - 1, row - 1 + count),
-        setValues(values) { assert.equal(locked, true); rows.splice(row - 1, values.length, ...values); writes++; },
+        getValues: values, getDisplayValues: values,
+        setValues(values) {
+          assert.equal(locked, true);
+          values.forEach((cells, r) => {
+            rows[row - 1 + r] ||= [];
+            cells.forEach((value, c) => { rows[row - 1 + r][col - 1 + c] = value; });
+          });
+          writes++;
+        },
         createTextFinder(id) { return { matchEntireCell: () => ({ findNext: () => {
-          const found = rows.findIndex(values => values[4] === id);
-          return found > 0 ? { getRow: () => found + 1 } : null;
+          const found = values().findIndex(cells => cells.includes(id));
+          return found >= 0 ? { getRow: () => row + found } : null;
         } }) }; },
       };
     },
@@ -128,4 +136,57 @@ test('unauthorized, unknown or mismatched email claims never expose guest data o
  assert.equal(f.post({action:'claim-email',id:claimId,claimId,token:'test-token'}).ok,false);
  f.post({action:'claim-email',id:input.id,claimId,token:'test-token'});
  assert.equal(f.post({action:'finish-email',id:input.id,claimId:input.id,status:'sent',messageId:'fake',token:'test-token'}).ok,false);
+});
+
+
+test('notes inserted above the guest list do not break saves or duplicate recovery', () => {
+  const header = ['Name', 'Email', 'Tickets needed', 'Received at', 'RSVP reference'];
+  const notes = [['Notice: We each get 5 comp tickets, Kimmie has donated hers'], []];
+  const f = fixture([...notes, header]);
+  assert.deepEqual(f.post({ ...input, token: 'test-token' }), receipt);
+  assert.deepEqual(f.post({ ...input, token: 'test-token' }), receipt);
+  assert.deepEqual(f.rows.slice(0, 3), [...notes, header]);
+  assert.equal(f.rows.length, 4);
+  assert.equal(f.rows[3][1], input.email);
+  assert.equal(f.writes(), 1);
+  const claim = f.post({ action: 'claim-email', id: input.id, claimId, token: 'test-token' });
+  assert.equal(claim.email, input.email);
+});
+
+test('reordered columns and extra team notes preserve guest data and email recipients', () => {
+  const header = ['Team notes', ' RSVP reference ', 'Email', 'Received at', 'NAME', 'Tickets needed'];
+  const oldGuest = ['Keep this note', claimId, 'existing@example.invalid', 'yesterday', 'Existing Guest', 1];
+  const f = fixture([['VIP list'], [], header, oldGuest]);
+  assert.deepEqual(f.post({ ...input, token: 'test-token' }), receipt);
+  assert.deepEqual(f.rows[3], oldGuest);
+  assert.equal(f.rows[4][1], input.id);
+  assert.equal(f.rows[4][2], input.email);
+  assert.equal(f.rows[4][4], input.name);
+  assert.equal(f.rows[4][5], input.guests);
+  assert.deepEqual(f.post({ ...input, token: 'test-token' }), receipt);
+  assert.equal(f.rows.length, 5);
+  const claim = f.post({ action: 'claim-email', id: input.id, claimId, token: 'test-token' });
+  assert.equal(claim.email, input.email);
+  assert.equal(claim.name, input.name);
+  assert.equal(claim.guests, input.guests);
+});
+
+test('a guest remains retrievable when notes are inserted after their reservation', () => {
+  const f = fixture();
+  f.post({ ...input, token: 'test-token' });
+  f.rows.unshift(['New team note'], []);
+  assert.deepEqual(f.post({ ...input, token: 'test-token' }), receipt);
+  assert.equal(f.rows.length, 4);
+  assert.equal(f.post({ action: 'claim-email', id: input.id, claimId, token: 'test-token' }).email, input.email);
+});
+
+test('missing or ambiguous headers fail without modifying any sheet contents', () => {
+  const headers = ['Name', 'Email', 'Tickets needed', 'Received at', 'RSVP reference'];
+  for (const rows of [[['Notes only']], [headers, headers], [['Name', 'Email', 'Email', 'Tickets needed', 'Received at', 'RSVP reference']]]) {
+    const f = fixture(rows);
+    const before = structuredClone(rows);
+    assert.equal(f.post({ ...input, token: 'test-token' }).ok, false);
+    assert.equal(f.writes(), 0);
+    assert.deepEqual(f.rows, before);
+  }
 });

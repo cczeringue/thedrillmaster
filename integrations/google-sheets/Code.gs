@@ -17,12 +17,39 @@ function authorized_(token) {
   return difference === 0;
 }
 
+// Team notes may precede the table and columns may be rearranged. Resolve the
+// labelled table on each request rather than treating a cell address as a schema.
 function sheet_() {
   var sheet = SpreadsheetApp.openById(RSVP_SHEET_ID).getSheetByName('RSVPs');
-  if (!sheet || JSON.stringify(sheet.getRange(1, 1, 1, 5).getValues()[0]) !== JSON.stringify(RSVP_HEADERS)) {
-    throw new Error('RSVP sheet headers are missing.');
-  }
-  return sheet;
+  if (!sheet || !sheet.getLastRow() || !sheet.getLastColumn()) throw new Error('RSVP table is missing.');
+  var width = sheet.getLastColumn();
+  var rows = sheet.getRange(1, 1, Math.min(sheet.getLastRow(), 100), width).getDisplayValues();
+  var expected = RSVP_HEADERS.map(function (label) { return label.toLowerCase(); });
+  var matches = [];
+  rows.forEach(function (row, index) {
+    var labels = row.map(function (cell) { return String(cell).trim().toLowerCase(); });
+    var columns = expected.map(function (label) { return labels.indexOf(label); });
+    if (columns.every(function (column) { return column >= 0; })) {
+      if (expected.some(function (label) { return labels.indexOf(label) !== labels.lastIndexOf(label); })) {
+        throw new Error('RSVP table has duplicate column headings.');
+      }
+      matches.push({ sheet: sheet, headerRow: index + 1, columns: columns, width: width });
+    }
+  });
+  if (matches.length !== 1) throw new Error('RSVP table headings are missing or ambiguous.');
+  return matches[0];
+}
+
+function findReference_(table, id) {
+  var first = table.headerRow + 1;
+  var count = table.sheet.getLastRow() - table.headerRow;
+  return count > 0 ? table.sheet.getRange(first, table.columns[4] + 1, count, 1)
+    .createTextFinder(id).matchEntireCell(true).findNext() : null;
+}
+
+function readGuest_(table, rowNumber) {
+  var row = table.sheet.getRange(rowNumber, 1, 1, table.width).getDisplayValues()[0];
+  return table.columns.map(function (column) { return row[column]; });
 }
 
 function literal_(text) {
@@ -58,15 +85,20 @@ function doPost(event) {
 
     lock = LockService.getScriptLock();
     lock.waitLock(10000);
-    var sheet = sheet_();
+    var table = sheet_();
+    var sheet = table.sheet;
     var last = sheet.getLastRow();
-    var existing = last > 1 ? sheet.getRange(2, 5, last - 1, 1).createTextFinder(input.id).matchEntireCell(true).findNext() : null;
+    var existing = findReference_(table, input.id);
     if (existing) {
-      var row = sheet.getRange(existing.getRow(), 1, 1, 5).getDisplayValues()[0];
+      var row = readGuest_(table, existing.getRow());
       return json_({ ok: true, reference: input.id, name: row[0], guests: Number(row[2]) });
     }
     if (last >= sheet.getMaxRows()) sheet.insertRowsAfter(last, 100);
-    sheet.getRange(last + 1, 1, 1, 5).setValues([[literal_(name), literal_(email), input.guests, new Date(), input.id]]);
+    var values = new Array(table.width).fill('');
+    [literal_(name), literal_(email), input.guests, new Date(), input.id].forEach(function (value, index) {
+      values[table.columns[index]] = value;
+    });
+    sheet.getRange(last + 1, 1, 1, table.width).setValues([values]);
     SpreadsheetApp.flush();
     return json_({ ok: true, reference: input.id, name: name, guests: input.guests });
   } catch (error) {
@@ -86,9 +118,8 @@ function emailAction_(input) {
   if (input.action !== 'claim-email' && input.action !== 'finish-email') return json_({ ok: false });
   try {
     lock.waitLock(10000);
-    var sheet = sheet_();
-    var last = sheet.getLastRow();
-    var cell = last > 1 ? sheet.getRange(2, 5, last - 1, 1).createTextFinder(input.id).matchEntireCell(true).findNext() : null;
+    var table = sheet_();
+    var cell = findReference_(table, input.id);
     if (!cell) return json_({ ok: false });
     var properties = PropertiesService.getScriptProperties();
     var key = 'confirmation:' + input.id;
@@ -111,7 +142,7 @@ function emailAction_(input) {
     if (state.status === 'sending' && state.claimId !== input.claimId && now - state.updatedAt < 120000) {
       return json_({ ok: true, status: 'pending' });
     }
-    var row = sheet.getRange(cell.getRow(), 1, 1, 5).getDisplayValues()[0];
+    var row = readGuest_(table, cell.getRow());
     properties.setProperty(key, JSON.stringify({ status: 'sending', claimId: input.claimId,
       firstAttemptAt: state.status === 'failed' ? now : (state.firstAttemptAt || now), updatedAt: now }));
     return json_({ ok: true, status: 'claimed', reference: input.id, name: row[0], email: row[1], guests: Number(row[2]) });
