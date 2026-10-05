@@ -86,5 +86,17 @@
     "api/vip-rsvp.js": {
       "maxDuration": 120
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/shows/the-elysian-october-13-2026",
+      "destination": "/shows/the-elysian-october-13-2026/",
+      "permanent": true
+    },
+    {
+      "source": "/shows/the-elysian-october-13-2026/index.html",
+      "destination": "/shows/the-elysian-october-13-2026/",
+      "permanent": true
+    }
+  ]
 }
