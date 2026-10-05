@@ -24,7 +24,7 @@ The October 5 setup verification includes operator test traffic and a controlled
 
 - Production deployment: https://thedrillmaster-fi14cy3yr-calebs-projects-63729651.vercel.app, aliased to the public domain.
 - Google Analytics Realtime visibly received one page_view and one get_tickets_click from the controlled production test. The ticket event's button_location value was hero.
-- Realtime also displayed one first_visit, one session_start and one generic click. Only get_tickets_click is the ticket-interest metric; do not add generic click to it. Enhanced measurement was rechecked and remains off.
+- Realtime also displayed one first_visit, one session_start and one generic click. Only get_tickets_click is the ticket-interest metric; do not add generic click to it. Enhanced measurement was then disabled and its Turn off confirmation completed, retaining standard page views and the explicit custom ticket event.
 - Evidence: /Users/caleb/Documents/Codex/2026-09-11/dr/drillmaster-analytics-verified.png.
 - The production build passed 46 automated tests and type checking. Tests cover ticket-link behavior when tracking fails, production-only collection, nested button targets, middle clicks, and stripping query strings and fragments.
 - The stream setup status still showed its initial no-data notice while Realtime already showed received events. Prefer the direct Realtime receipt as the collection evidence; processed daily reports may lag.
