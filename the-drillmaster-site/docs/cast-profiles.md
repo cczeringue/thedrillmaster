@@ -4,19 +4,15 @@ Updated September 14, 2026. Short bios are original summaries of the linked perf
 
 Photos are hosted locally as compressed WebP assets. Original aspect ratios are preserved; display framing is controlled in CSS. No facial retouching or generated imagery.
 
-## Dylan Adler
+## Victoria Elena Nones
 
-**Role:** William North
+**Role:** William North (replacing Dylan Adler, supplied by Caleb on October 5, 2026).
 
-**Bio sources:**
+**Bio:** Exact copy supplied by Caleb on October 5, 2026.
 
-- https://www.dylanaadler.com/
+**Photo:** Supplied by Caleb in the same request. Resized and compressed for delivery; original photo content preserved, circular framing controlled in CSS.
 
-**Photo source page:** https://www-micdropcomedychandler-com.seatengine.com/events
-
-**Photo asset:** https://files.seatengine.com/talent/headshots/photos/89392/full/data
-
-**Local asset:** `public/bios/cast/dylan.webp`
+**Local asset:** `public/bios/cast/victoria.jpg`
 
 ## Guy Branum
 

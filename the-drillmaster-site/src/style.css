@@ -1214,7 +1214,7 @@ a.hero__credit-name {
 .portrait--jenny { --portrait-position: center; --portrait-scale: 2.4; }
 .portrait--caleb { --portrait-position: center 10%; --portrait-scale: 1.75; --portrait-origin: center 35%; }
 .portrait--jeffrey { --portrait-position: center top; --portrait-scale: 1.1; --portrait-origin: 70% 30%; }
-.portrait--dylan { --portrait-scale: 1.9; --portrait-origin: center 35%; }
+.portrait--victoria { --portrait-position: center top; --portrait-scale: 1.8; --portrait-origin: 48% 36%; }
 .portrait--jeremy { --portrait-position: center top; --portrait-scale: 1.5; --portrait-origin: center top; }
 .portrait--chad { --portrait-position: center 30%; }
 .portrait--emon { --portrait-position: center top; }

@@ -32,7 +32,7 @@ const CAST = [
   ["Jenny Zigrino", "The Baron"],
   ["Caleb Zeringue", "Alexander Hamilton"],
   ["Jeffrey Jay", "Pierre DuPonceau"],
-  ["Dylan Adler", "William North"],
+  ["Victoria Elena Nones", "William North"],
   ["Guy Branum", "Thomas Conway"],
   ["Jeremy Crittenden", "John Laurens"],
   ["Chad Damiani", "The Narrator"],

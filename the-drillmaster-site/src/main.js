@@ -46,7 +46,7 @@ const bioContents = {
   jenny: document.getElementById('bio-content-jenny'),
   caleb: document.getElementById('bio-content-caleb'),
   jeffrey: document.getElementById('bio-content-jeffrey'),
-  dylan: document.getElementById('bio-content-dylan'),
+  victoria: document.getElementById('bio-content-victoria'),
   guy: document.getElementById('bio-content-guy'),
   jeremy: document.getElementById('bio-content-jeremy'),
   chad: document.getElementById('bio-content-chad'),
