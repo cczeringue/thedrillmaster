@@ -8,6 +8,7 @@ Google Analytics 4 was set up October 5, 2026, for https://www.thedrillmaster.ga
 - Public measurement ID: G-GXFTMNXLD1. This is not a secret.
 - Main script: src/analytics.js, included on all five built HTML entry points.
 - Ticket-interest event: get_tickets_click. button_location identifies the announcement, navigation, hero, event_details, cast, newsletter, footer, event_hero or event_footer button.
+- Event-scoped custom dimension: Ticket button location, registered October 5 for parameter button_location. Reporting API name: customEvent:button_location. Include a button-location click breakdown once processed data is available.
 - Count eventCount as clicks; totalUsers for this event as distinct ticket clickers. Click-through rate is distinct ticket clickers / total website users for the same period, not clicks / page views. Never call clicks ticket purchases.
 - Enhanced measurement is off. No automatic form or search tracking. Advertising signals and ad personalization are disabled. Page URLs and referrers omit query strings and fragments. No RSVP form data is read.
 - Tracking runs only on the two production hostnames, not localhost or Vercel previews. Ticket navigation is never intercepted and analytics errors cannot block it.
@@ -28,3 +29,4 @@ The October 5 setup verification includes operator test traffic and a controlled
 - Evidence: /Users/caleb/Documents/Codex/2026-09-11/dr/drillmaster-analytics-verified.png.
 - The production build passed 46 automated tests and type checking. Tests cover ticket-link behavior when tracking fails, production-only collection, nested button targets, middle clicks, and stripping query strings and fragments.
 - The stream setup status still showed its initial no-data notice while Realtime already showed received events. Prefer the direct Realtime receipt as the collection evidence; processed daily reports may lag.
+- Follow-up verification confirmed the test ticket link opened The Drillmaster's October 13, 7:30pm OpenDate checkout. No tickets were purchased. The custom dimension is visibly saved; evidence: /Users/caleb/Documents/Codex/2026-09-11/dr/drillmaster-button-reporting.png.
