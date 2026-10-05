@@ -7,12 +7,13 @@
     "node": ">=20"
   },
   "scripts": {
-    "prebuild": "npm run test:vip && npm run typecheck:vip",
+    "prebuild": "npm run test:analytics && npm run test:vip && npm run typecheck:vip",
     "test:vip": "node --test tests/vip-*.test.mjs",
     "typecheck:vip": "tsc --noEmit",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:analytics": "node --test tests/analytics.test.mjs"
   },
   "dependencies": {
     "@vercel/functions": "3.9.8",

@@ -77,7 +77,7 @@
     target="_blank"
     rel="noopener"
     aria-label="October 13 at 7:30 p.m., The Elysian. Get tickets."
-  >
+   data-ticket-placement="announcement">
     <span>Oct 13 · 7:30pm · The Elysian</span>
     <strong>Get Tickets</strong>
   </a>
@@ -99,7 +99,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         <span class="nav__ig-label">Follow Us</span>
       </a>
-      <a href="https://app.opendate.io/confirms/752818/web_orders/new" class="nav__cta" target="_blank" rel="noopener">Get Tickets</a>
+      <a href="https://app.opendate.io/confirms/752818/web_orders/new" class="nav__cta" target="_blank" rel="noopener" data-ticket-placement="navigation">Get Tickets</a>
     </div>
   </nav>
 
@@ -148,7 +148,7 @@
           class="btn btn--coral"
           target="_blank"
           rel="noopener"
-        >Get Tickets &rarr;</a>
+         data-ticket-placement="hero">Get Tickets &rarr;</a>
         <p class="hero__cta-note">A sneak peek of the next big thing. The last reading sold out.</p>
       </div>
 
@@ -201,7 +201,7 @@
         class="btn btn--coral"
         target="_blank"
         rel="noopener"
-      >Get October 13 Tickets &rarr;</a>
+       data-ticket-placement="event_details">Get October 13 Tickets &rarr;</a>
       <p class="tickets-tease__admission">21+ · General admission · Tickets sold by The Elysian</p>
     </div>
     <div class="staged-cast" id="team" aria-labelledby="staged-cast-heading">
@@ -346,7 +346,7 @@
         <cite><a href="https://freaksofhhn.com/2026/05/05/the-drill-master-brings-revolutionary-camp-to-life-with-bold-queer-comedy/" target="_blank" rel="noopener" aria-label="Read the Freaks of HHN review (opens in a new tab)">Freaks of HHN <span aria-hidden="true">↗</span></a></cite>
       </blockquote>
       <p class="staged-cast__date">Oct 13 · 7:30pm · The Elysian</p>
-      <a class="cast-ticket-link" href="https://app.opendate.io/confirms/752818/web_orders/new" target="_blank" rel="noopener">See them live · Get tickets <span aria-hidden="true">→</span></a>
+      <a class="cast-ticket-link" href="https://app.opendate.io/confirms/752818/web_orders/new" target="_blank" rel="noopener" data-ticket-placement="cast">See them live · Get tickets <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -513,7 +513,7 @@
     <h2 class="newsletter__heading" id="newsletter-heading">Stay Drilled</h2>
     <p class="newsletter__sub">Oct 13 tickets are on sale. Join the list for cast news and future dates.</p>
     <p class="newsletter__notice">
-      <a href="https://app.opendate.io/confirms/752818/web_orders/new" target="_blank" rel="noopener">Get tickets for the Elysian</a>
+      <a href="https://app.opendate.io/confirms/752818/web_orders/new" target="_blank" rel="noopener" data-ticket-placement="newsletter">Get tickets for the Elysian</a>
       before this reading sells out like the last one.
     </p>
     <div id="newsletter-wrap">
@@ -864,7 +864,7 @@
         href="https://app.opendate.io/confirms/752818/web_orders/new"
         target="_blank"
         rel="noopener"
-      >
+       data-ticket-placement="footer">
         Get Oct 13 Tickets
       </a>
       <a
@@ -884,5 +884,6 @@
 
   <script async src="https://www.instagram.com/embed.js"></script>
   <script type="module" src="/src/main.js"></script>
+  <script type="module" src="/src/analytics.js"></script>
 </body>
 </html>
